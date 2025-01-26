@@ -20,6 +20,12 @@ import com.luis.dev.meliapp.features.results.presentation.ResultsScreen
 import com.luis.dev.meliapp.features.results.presentation.ResultsViewModel
 import com.luis.dev.meliapp.core.components.searchTopAppBar.SearchBarViewModel
 import com.luis.dev.meliapp.core.components.searchTopAppBar.SearchTopAppBar
+import com.luis.dev.meliapp.features.authentication.presentation.login.LoginScreen
+import com.luis.dev.meliapp.features.authentication.presentation.login.LoginViewModel
+import com.luis.dev.meliapp.features.authentication.presentation.register.RegisterScreen
+import com.luis.dev.meliapp.features.authentication.presentation.register.RegisterViewModel
+import com.luis.dev.meliapp.features.authentication.presentation.reset.ResetPasswordScreen
+import com.luis.dev.meliapp.features.authentication.presentation.reset.ResetPasswordViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,10 +49,47 @@ fun AppNavigation() {
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = Route.Home,
+            startDestination = Route.Login,
             modifier = Modifier
                 .padding(padding)
         ) {
+            composable<Route.Login> {
+                val loginViewModel: LoginViewModel = koinViewModel()
+                val loginState = loginViewModel.state.collectAsState().value
+
+                LoginScreen(
+                    loginState = loginState,
+                    onIntent = { loginViewModel.handleIntent(it) },
+                    onNavigateToRegister = { navController.navigate(Route.Register) },
+                    onNavigateToReset = { navController.navigate(Route.RecoverPassword) },
+                    onNavigateBack = {  },
+                    onLoginSuccess = { navController.navigate(Route.Home) }
+                )
+            }
+
+            composable<Route.Register> {
+                val registerViewModel: RegisterViewModel = koinViewModel()
+                val registerState = registerViewModel.state.collectAsState().value
+
+                RegisterScreen(
+                    state = registerState,
+                    onIntent = { registerViewModel.handleIntent(it) },
+                    onNavigateToLogin = { navController.navigate(Route.Login) },
+                    onRegistrationSuccess = { navController.navigate(Route.Home) }
+                )
+            }
+
+            composable<Route.RecoverPassword> {
+                val resetViewModel: ResetPasswordViewModel = koinViewModel()
+                val resetState = resetViewModel.state.collectAsState().value
+
+                ResetPasswordScreen(
+                    state = resetState,
+                    onIntent = { resetViewModel.handleIntent(it) },
+                    onNavigateBack = { navController.navigate(Route.Login) }
+                )
+            }
+
             composable<Route.Home> {
                 HomeScreen()
                 BackHandler {

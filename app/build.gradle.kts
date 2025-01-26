@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -92,4 +93,18 @@ dependencies {
     // Pager
     implementation (libs.accompanist.pager)
     implementation (libs.accompanist.pager.indicators)
+
+    // Vertex AI by Firebase
+    implementation(libs.firebase.vertexai)
+
+    // Firebase BOM (Bill of Materials)
+    implementation(platform(libs.firebase.bom))
+
+    // Firebase dependencies
+    implementation (libs.firebase.auth.ktx)
+    implementation (libs.firebase.firestore.ktx)
+    implementation (libs.firebase.storage.ktx)
+
+    // Material Extended Icons
+    implementation(libs.androidx.material.icons.extended)
 }

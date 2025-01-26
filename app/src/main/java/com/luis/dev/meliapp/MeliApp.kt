@@ -2,6 +2,7 @@ package com.luis.dev.meliapp
 
 import android.app.Application
 import com.luis.dev.meliapp.di.globalModule
+import com.luis.dev.meliapp.features.authentication.di.authenticationModule
 import com.luis.dev.meliapp.features.details.di.detailsModule
 import com.luis.dev.meliapp.features.results.di.resultsModule
 import org.koin.android.ext.koin.androidContext
@@ -17,6 +18,7 @@ class MeliApp : Application(){
             androidContext(this@MeliApp)
             modules(
                 listOf(
+                    authenticationModule,
                     resultsModule,
                     detailsModule,
                     globalModule
