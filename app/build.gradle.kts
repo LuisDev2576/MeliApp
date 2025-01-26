@@ -60,6 +60,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation (libs.accompanist.systemuicontroller)
 
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+
     // Koin
     implementation(libs.koin.androidx.compose)
 
@@ -85,4 +88,8 @@ dependencies {
 
     // SLF4J Simple para tests
     testImplementation(libs.slf4j.simple)
+
+    // Pager
+    implementation (libs.accompanist.pager)
+    implementation (libs.accompanist.pager.indicators)
 }
