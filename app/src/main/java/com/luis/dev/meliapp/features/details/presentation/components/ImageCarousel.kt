@@ -21,7 +21,7 @@ import com.luis.dev.meliapp.R
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ImageCarousel(
-    imageList: List<String>, // Lista de URLs o recursos de imágenes
+    imageList: List<String>,
     modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState()
@@ -57,7 +57,7 @@ fun ImageCarousel(
 }
 
 @Composable
-fun CarouselItem(imageUrl: String) {
+private fun CarouselItem(imageUrl: String) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(imageUrl)

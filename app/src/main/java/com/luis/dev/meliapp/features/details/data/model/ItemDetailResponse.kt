@@ -20,14 +20,21 @@ data class ItemDetailResponse(
     val pictures: List<Picture> = emptyList(),
     val attributes: List<Attribute> = emptyList(),
     val installments: Installments? = null,
-    val warranty: String? = null
-){
+    val warranty: String? = null,
+    val shipping: Shipping? = null // Nuevo campo añadido
+) {
     val discountPercentage: Double?
         get() = if (originalPrice != null && originalPrice > 0 && price < originalPrice) {
             ((originalPrice - price) / originalPrice) * 100
         } else {
             null
         }
+
+    /**
+     * Propiedad computada para verificar si el envío es gratis.
+     */
+    val hasFreeShipping: Boolean
+        get() = shipping?.freeShipping ?: false
 }
 
 /**
@@ -48,4 +55,12 @@ data class Attribute(
     val id: String,
     val name: String,
     @SerialName("value_name") val valueName: String? = null
+)
+
+/**
+ * Representa la información de envío del producto.
+ */
+@Serializable
+data class Shipping(
+    @SerialName("free_shipping") val freeShipping: Boolean? = null,
 )

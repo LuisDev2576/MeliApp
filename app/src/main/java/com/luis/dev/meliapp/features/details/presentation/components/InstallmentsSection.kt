@@ -16,10 +16,11 @@ import androidx.compose.ui.unit.sp
 import com.luis.dev.meliapp.core.utils.toFormattedPrice
 import com.luis.dev.meliapp.ui.theme.PigmentGreen
 
+/**
+ * Sección que muestra las opciones de cuotas.
+ */
 @Composable
-fun Installments(price: Double){
-    val randonNumberQuantity = (3..12).random()
-    val amount = price / randonNumberQuantity
+fun InstallmentsSection(numeroDeCuotas: Int, amount: Double) {
     Column {
         Row {
             Text(
@@ -30,7 +31,7 @@ fun Installments(price: Double){
                 fontSize = 18.sp
             )
             Text(
-                text = " $randonNumberQuantity cuotas de $ ${amount.toInt().toFormattedPrice()} sin interés",
+                text = " $numeroDeCuotas cuotas de $ ${amount.toInt().toFormattedPrice()} sin interés",
                 style = MaterialTheme.typography.bodySmall,
                 color = PigmentGreen,
                 fontWeight = FontWeight.Normal,
