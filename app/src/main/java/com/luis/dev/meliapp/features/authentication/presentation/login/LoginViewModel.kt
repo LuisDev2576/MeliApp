@@ -9,22 +9,34 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
+/**
+ * ViewModel para gestionar el estado y la lógica del flujo de inicio de sesión.
+ *
+ * @param loginUseCase Caso de uso para manejar la lógica de inicio de sesión.
+ */
 class LoginViewModel(
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
+
+    /**
+     * Estado público inmutable que representa el estado actual de la vista.
+     */
     val state: StateFlow<LoginState> get() = _state
 
+    /**
+     * Maneja las intenciones enviadas desde la vista, actualizando el estado o ejecutando acciones según corresponda.
+     *
+     * @param intent Intención del usuario, como cambios en los campos de texto o iniciar sesión.
+     */
     fun handleIntent(intent: LoginIntent) {
         when (intent) {
             is LoginIntent.EmailChanged -> {
-                _state.value = _state.value.copy(email = intent.email)
-                _state.value = _state.value.copy(errorMessage = null)
+                _state.value = _state.value.copy(email = intent.email, errorMessage = null)
             }
             is LoginIntent.PasswordChanged -> {
-                _state.value = _state.value.copy(password = intent.password)
-                _state.value = _state.value.copy(errorMessage = null)
+                _state.value = _state.value.copy(password = intent.password, errorMessage = null)
             }
             is LoginIntent.LoginClicked -> {
                 login()
@@ -35,11 +47,14 @@ class LoginViewModel(
         }
     }
 
+    /**
+     * Realiza la operación de inicio de sesión, validando los datos ingresados y llamando al caso de uso.
+     * Actualiza el estado según el resultado de la operación.
+     */
     private fun login() {
         viewModelScope.launch {
             val current = _state.value
 
-            // Validaciones locales
             if (!isEmailValid(current.email)) {
                 _state.value = current.copy(errorMessage = "Email inválido")
                 return@launch
@@ -49,7 +64,6 @@ class LoginViewModel(
                 return@launch
             }
 
-            // Indicar loading
             _state.value = current.copy(isLoading = true, errorMessage = null)
 
             val result = loginUseCase(current.email, current.password)
@@ -67,6 +81,12 @@ class LoginViewModel(
         }
     }
 
+    /**
+     * Valida si el email ingresado cumple con un formato válido.
+     *
+     * @param email Correo electrónico a validar.
+     * @return `true` si el email es válido, de lo contrario `false`.
+     */
     private fun isEmailValid(email: String): Boolean {
         val pattern = Pattern.compile(
             "^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$",
@@ -75,6 +95,12 @@ class LoginViewModel(
         return pattern.matcher(email).matches()
     }
 
+    /**
+     * Valida si la contraseña cumple con los criterios de longitud mínima.
+     *
+     * @param password Contraseña a validar.
+     * @return `true` si la contraseña es válida, de lo contrario `false`.
+     */
     private fun isPasswordValid(password: String): Boolean {
         return password.length >= 6
     }

@@ -1,6 +1,5 @@
 package com.luis.dev.meliapp.di
 
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.luis.dev.meliapp.core.components.searchTopAppBar.SearchBarViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -13,18 +12,25 @@ import org.koin.dsl.module
 import org.koin.androidx.viewmodel.dsl.viewModel
 
 /**
- * Módulo con dependencias globales, utilizadas por múltiples features.
+ * Módulo de dependencias globales utilizado para inyección de dependencias con Koin.
  */
 val globalModule = module {
 
-    // Proveedor de Json de Kotlinx Serialization
+    /**
+     * Proveedor de configuración de Kotlinx Serialization para deserializar JSON.
+     * - Configuración: Ignora claves desconocidas en las respuestas JSON.
+     */
     single {
         Json {
             ignoreUnknownKeys = true
         }
     }
 
-    // Proveedor de HttpClient de Ktor con OkHttp como motor
+    /**
+     * Proveedor de [HttpClient] configurado con el motor OkHttp y soporte para:
+     * - Serialización JSON con Kotlinx Serialization.
+     * - Logs de nivel BODY para depuración de solicitudes y respuestas HTTP.
+     */
     single {
         HttpClient(OkHttp) {
             install(ContentNegotiation) {
@@ -33,10 +39,12 @@ val globalModule = module {
             install(Logging) {
                 level = LogLevel.BODY
             }
-            // Configuraciones extras de Ktor (timeouts, etc.)
         }
     }
 
+    /**
+     * Proveedor de [SearchBarViewModel] para gestionar el estado y lógica de la barra de búsqueda.
+     */
     viewModel {
         SearchBarViewModel()
     }

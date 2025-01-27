@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -18,14 +17,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.luis.dev.meliapp.R
-import com.luis.dev.meliapp.features.authentication.presentation.components.ActionButton
-import com.luis.dev.meliapp.features.authentication.presentation.components.ConfirmPasswordTextField
-import com.luis.dev.meliapp.features.authentication.presentation.components.EmailTextField
-import com.luis.dev.meliapp.features.authentication.presentation.components.Greeting
-import com.luis.dev.meliapp.features.authentication.presentation.components.NameTextField
-import com.luis.dev.meliapp.features.authentication.presentation.components.NavigationTextButton
+import com.luis.dev.meliapp.features.authentication.presentation.components.CustomActionButton
+import com.luis.dev.meliapp.features.authentication.presentation.components.ConfirmPasswordField
+import com.luis.dev.meliapp.features.authentication.presentation.components.EmailInputField
+import com.luis.dev.meliapp.features.authentication.presentation.components.GreetingMessage
+import com.luis.dev.meliapp.features.authentication.presentation.components.NameInputField
+import com.luis.dev.meliapp.features.authentication.presentation.components.NavigationLinkText
 import com.luis.dev.meliapp.features.authentication.presentation.components.PasswordTextField
 
+/**
+ * Pantalla de registro que permite a los usuarios crear una cuenta mediante el ingreso de sus datos personales,
+ * correo electrónico y contraseña.
+ *
+ * @param state Estado actual del proceso de registro, que incluye datos ingresados por el usuario y mensajes de error.
+ * @param onIntent Callback para manejar las intenciones del usuario, como cambios en los campos de texto o registrar una cuenta.
+ * @param onNavigateToLogin Callback que se ejecuta cuando el usuario desea regresar a la pantalla de inicio de sesión.
+ * @param onRegistrationSuccess Callback que se ejecuta cuando el registro se completa con éxito.
+ */
 @Composable
 fun RegisterScreen(
     state: RegisterState,
@@ -59,7 +67,7 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Greeting(
+            GreetingMessage(
                 titleResId = R.string.create_account_title,
             )
 
@@ -75,18 +83,18 @@ fun RegisterScreen(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.End
             ){
-                NameTextField(
+                NameInputField(
                     name = state.fullName,
                     onNameChange = { onIntent(RegisterIntent.FullNameChanged(it)) },
-                    isError = state.errorMessage?.contains("nombre") == true
+                    hasError = state.errorMessage?.contains("nombre") == true
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                EmailTextField(
+                EmailInputField(
                     email = state.email,
                     onEmailChange = { onIntent(RegisterIntent.EmailChanged(it)) },
-                    isError = state.errorMessage?.contains("Email") == true
+                    hasError = state.errorMessage?.contains("Email") == true
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -101,10 +109,10 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                ConfirmPasswordTextField(
-                    password = state.confirmPassword,
-                    onPasswordChange = { onIntent(RegisterIntent.ConfirmPasswordChanged(it)) },
-                    isError = state.errorMessage?.contains("Las contraseñas no coinciden") == true,
+                ConfirmPasswordField(
+                    confirmPassword = state.confirmPassword,
+                    onConfirmPasswordChange = { onIntent(RegisterIntent.ConfirmPasswordChanged(it)) },
+                    hasError = state.errorMessage?.contains("Las contraseñas no coinciden") == true,
                     onDone = { onIntent(RegisterIntent.RegisterClicked) }
                 )
             }
@@ -120,15 +128,15 @@ fun RegisterScreen(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
-                ActionButton(
-                    text = "Registrarse",
-                    enabled = !state.isLoading,
-                    onClick = { onIntent(RegisterIntent.RegisterClicked) }
+                CustomActionButton(
+                    label = "Registrarse",
+                    isEnabled = !state.isLoading,
+                    onAction = { onIntent(RegisterIntent.RegisterClicked) }
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                NavigationTextButton(
+                NavigationLinkText(
                     primaryTextId = R.string.already_have_account,
                     secondaryTextId = R.string.login_button,
                     onClick = { onNavigateToLogin() }

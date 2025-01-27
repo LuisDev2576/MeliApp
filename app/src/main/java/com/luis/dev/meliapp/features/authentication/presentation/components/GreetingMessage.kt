@@ -13,8 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
+/**
+ * Componente para mostrar un saludo con un título y, opcionalmente, instrucciones adicionales.
+ *
+ * @param titleResId ID del recurso de texto que representa el título del saludo.
+ * @param instructionsResId ID opcional del recurso de texto que representa las instrucciones adicionales.
+ * Si no se proporciona, solo se mostrará el título.
+ */
 @Composable
-fun Greeting(
+fun GreetingMessage(
     titleResId: Int,
     instructionsResId: Int? = null
 ) {

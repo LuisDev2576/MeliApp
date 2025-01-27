@@ -15,10 +15,15 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.luis.dev.meliapp.R
 
+/**
+ * Banner publicitario que muestra una imagen con estilo y diseño personalizado.
+ *
+ * @param imageUrl URL de la imagen que se mostrará en el banner.
+ */
 @Composable
-fun BannerPublicitario(
+fun AdvertisementBanner(
     imageUrl: String,
-){
+) {
     AsyncImage(
         model = imageUrl,
         placeholder = painterResource(R.drawable.no_image_available),
@@ -31,6 +36,5 @@ fun BannerPublicitario(
             .height(90.dp)
             .clip(RoundedCornerShape(10))
             .clickable {}
-
     )
 }

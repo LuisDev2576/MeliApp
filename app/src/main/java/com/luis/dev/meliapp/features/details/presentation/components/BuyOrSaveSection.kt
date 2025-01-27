@@ -1,4 +1,5 @@
 package com.luis.dev.meliapp.features.details.presentation.components
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,12 +12,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-
+/**
+ * Sección que contiene dos botones: uno para realizar la compra inmediata y otro para agregar el artículo al carrito.
+ *
+ * @param onBuyButtonClick Callback que se ejecuta cuando el usuario presiona el botón "Comprar ahora".
+ * @param onSaveButtonClick Callback que se ejecuta cuando el usuario presiona el botón "Agregar al carrito".
+ */
 @Composable
 fun BuyOrSaveSection(
     onBuyButtonClick: () -> Unit,
     onSaveButtonClick: () -> Unit,
-){
+) {
     Button(
         onClick = onBuyButtonClick,
         colors = ButtonDefaults.buttonColors(
@@ -41,8 +47,8 @@ fun BuyOrSaveSection(
     ) {
         Text(text = "Agregar al carrito")
     }
-
 }
+
 @Preview(showBackground = true, device = Devices.PIXEL_4_XL)
 @Composable
 fun BuyOrSaveSectionPreview() {

@@ -14,7 +14,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.luis.dev.meliapp.features.details.data.model.ItemDetailResponse
-import com.luis.dev.meliapp.features.results.presentation.components.ResultItemPriceSection
 
 /**
  * Muestra el contenido detallado del producto.
@@ -50,7 +49,7 @@ fun ItemDetailContent(itemDetail: ItemDetailResponse) {
             imageList = itemDetail.pictures.map { it.secureUrl!! }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        ResultItemPriceSection(
+        PriceSection(
             price = itemDetail.price,
             originalPrice = itemDetail.originalPrice,
             discountPercentage = itemDetail.discountPercentage

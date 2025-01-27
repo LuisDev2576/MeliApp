@@ -2,7 +2,6 @@ package com.luis.dev.meliapp.features.authentication.presentation.login
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,11 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -23,13 +18,24 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.luis.dev.meliapp.R
-import com.luis.dev.meliapp.features.authentication.presentation.components.ActionButton
-import com.luis.dev.meliapp.features.authentication.presentation.components.EmailTextField
-import com.luis.dev.meliapp.features.authentication.presentation.components.Greeting
-import com.luis.dev.meliapp.features.authentication.presentation.components.NavToRestartPasswordButton
-import com.luis.dev.meliapp.features.authentication.presentation.components.NavigationTextButton
+import com.luis.dev.meliapp.features.authentication.presentation.components.CustomActionButton
+import com.luis.dev.meliapp.features.authentication.presentation.components.EmailInputField
+import com.luis.dev.meliapp.features.authentication.presentation.components.GreetingMessage
+import com.luis.dev.meliapp.features.authentication.presentation.components.ResetPasswordNavigationButton
+import com.luis.dev.meliapp.features.authentication.presentation.components.NavigationLinkText
 import com.luis.dev.meliapp.features.authentication.presentation.components.PasswordTextField
 
+/**
+ * Pantalla de inicio de sesión que permite a los usuarios ingresar su correo electrónico y contraseña,
+ * además de opciones para recuperar la contraseña o registrarse.
+ *
+ * @param loginState Estado actual del proceso de inicio de sesión, incluyendo datos del usuario y mensajes de error.
+ * @param onIntent Callback que maneja las intenciones del usuario, como cambiar datos o iniciar sesión.
+ * @param onNavigateToRegister Callback que se ejecuta cuando el usuario desea navegar a la pantalla de registro.
+ * @param onNavigateToReset Callback que se ejecuta cuando el usuario desea navegar a la pantalla de recuperación de contraseña.
+ * @param onNavigateBack Callback que se ejecuta cuando el usuario desea regresar a la pantalla anterior.
+ * @param onLoginSuccess Callback que se ejecuta cuando el inicio de sesión se realiza con éxito.
+ */
 @Composable
 fun LoginScreen(
     loginState: LoginState,
@@ -42,11 +48,9 @@ fun LoginScreen(
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     BackHandler {
-        // Controla el back si lo deseas
         onNavigateBack()
     }
 
-    // Si el login tuvo éxito, podrías navegar
     if (loginState.success) {
         LaunchedEffect(Unit) {
             onLoginSuccess()
@@ -70,7 +74,7 @@ fun LoginScreen(
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Greeting(
+            GreetingMessage(
                 titleResId = R.string.greeting_message,
                 instructionsResId = R.string.login_prompt
             )
@@ -83,10 +87,10 @@ fun LoginScreen(
             Column(
                 horizontalAlignment = Alignment.End
             ) {
-                EmailTextField(
+                EmailInputField(
                     email = loginState.email,
                     onEmailChange = { onIntent(LoginIntent.EmailChanged(it)) },
-                    isError = loginState.errorMessage?.contains("Email") == true
+                    hasError = loginState.errorMessage?.contains("Email") == true
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -99,7 +103,7 @@ fun LoginScreen(
                     clearFocusOnDone = true
                 )
 
-                NavToRestartPasswordButton(
+                ResetPasswordNavigationButton(
                     onClick = { onNavigateToReset() }
                 )
             }
@@ -112,15 +116,15 @@ fun LoginScreen(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
-                ActionButton(
-                    text = "Iniciar Sesión",
-                    enabled = !loginState.isLoading,
-                    onClick = { onIntent(LoginIntent.LoginClicked) }
+                CustomActionButton(
+                    label = "Iniciar Sesión",
+                    isEnabled = !loginState.isLoading,
+                    onAction = { onIntent(LoginIntent.LoginClicked) }
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                NavigationTextButton(
+                NavigationLinkText(
                     primaryTextId = R.string.no_account,
                     secondaryTextId = R.string.create_account,
                     onClick = { onNavigateToRegister() }

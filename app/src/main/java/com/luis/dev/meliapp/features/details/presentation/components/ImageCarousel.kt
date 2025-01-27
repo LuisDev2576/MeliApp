@@ -18,6 +18,12 @@ import coil.request.ImageRequest
 import com.google.accompanist.pager.*
 import com.luis.dev.meliapp.R
 
+/**
+ * Carrusel de imágenes que permite la navegación horizontal entre múltiples imágenes y muestra indicadores de paginación.
+ *
+ * @param imageList Lista de URLs de las imágenes que se mostrarán en el carrusel.
+ * @param modifier Modificador opcional para personalizar el diseño del carrusel.
+ */
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ImageCarousel(
@@ -26,7 +32,10 @@ fun ImageCarousel(
 ) {
     val pagerState = rememberPagerState()
 
-    Column (modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         HorizontalPager(
             count = imageList.size,
             state = pagerState,
@@ -36,7 +45,6 @@ fun ImageCarousel(
             CarouselItem(imageUrl = imageList[page])
         }
 
-        // Indicadores de paginación
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
@@ -55,6 +63,7 @@ fun ImageCarousel(
         }
     }
 }
+
 
 @Composable
 private fun CarouselItem(imageUrl: String) {

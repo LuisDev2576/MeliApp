@@ -50,9 +50,7 @@ fun InstallmentsSection(numeroDeCuotas: Int, amount: Double) {
             fontSize = 14.sp,
             modifier = Modifier
                 .padding(vertical = 8.dp)
-                .clickable{
-
-                }
+                .clickable{ }
         )
     }
 }

@@ -1,21 +1,57 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Mantener las clases con anotaciones de Kotlin
+-keepattributes *Annotation*
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Mantener las clases de Kotlin necesarias
+-keep class kotlin.** { *; }
+-dontwarn kotlin.**
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Mantener las clases de Gson
+-keep class com.google.gson.** { *; }
+-dontwarn com.google.gson.**
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Koin
+-keep class org.koin.** { *; }
+-dontwarn org.koin.**
+
+# Ktor
+-keep class io.ktor.** { *; }
+-dontwarn io.ktor.**
+
+# Firebase
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
+
+# Coil
+-keep class coil.** { *; }
+-dontwarn coil.**
+
+# Accompanist
+-keep class com.google.accompanist.** { *; }
+-dontwarn com.google.accompanist.**
+
+# Evitar la eliminación de clases utilizadas por la reflexión
+-keep class androidx.lifecycle.** { *; }
+-keep class androidx.activity.** { *; }
+-keep class androidx.compose.** { *; }
+
+# Mantener las clases que extienden de Activity, Service, etc.
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+
+# Evitar la eliminación de métodos utilizados por Jetpack Compose
+-keep class androidx.compose.** { *; }
+-dontwarn androidx.compose.**
+
+# Mantener las clases de serialización de Kotlinx
+-keep class kotlinx.serialization.** { *; }
+-dontwarn kotlinx.serialization.**
+
+# Mantener las clases de Firebase Crashlytics
+-keep class com.google.firebase.crashlytics.** { *; }
+-dontwarn com.google.firebase.crashlytics.**
+
+# Mantener las clases de SLF4J
+-keep class org.slf4j.** { *; }
+-dontwarn org.slf4j.**

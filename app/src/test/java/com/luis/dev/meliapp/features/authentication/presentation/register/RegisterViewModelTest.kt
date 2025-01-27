@@ -34,92 +34,92 @@ class RegisterViewModelTest {
     }
 
     @Test
-    fun `cuando se actualiza el nombre, se refleja en el state y errorMessage se limpia`() = runTest {
-        // Dado
+    fun `when name is updated, it is reflected in the state and errorMessage is cleared`() = runTest {
+        // Given
         val name = "Luis Developer"
 
-        // Cuando
+        // When
         viewModel.handleIntent(RegisterIntent.FullNameChanged(name))
 
-        // Entonces
+        // Then
         val state = viewModel.state.first()
         assertEquals(name, state.fullName)
         assertNull(state.errorMessage)
     }
 
     @Test
-    fun `si el usuario da click en Register con nombre vacío, se muestra error`() = runTest {
-        // Dado
-        viewModel.handleIntent(RegisterIntent.FullNameChanged("")) // Nombre vacío
+    fun `when Register is clicked with an empty name, an error is shown`() = runTest {
+        // Given
+        viewModel.handleIntent(RegisterIntent.FullNameChanged("")) // Empty name
         viewModel.handleIntent(RegisterIntent.EmailChanged("test@example.com"))
         viewModel.handleIntent(RegisterIntent.PasswordChanged("123456"))
         viewModel.handleIntent(RegisterIntent.ConfirmPasswordChanged("123456"))
 
-        // Cuando
+        // When
         viewModel.handleIntent(RegisterIntent.RegisterClicked)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Entonces
+        // Then
         val state = viewModel.state.first()
         assertEquals("El nombre no puede estar vacío", state.errorMessage)
         assertFalse(state.isLoading)
     }
 
     @Test
-    fun `si el usuario da click en Register con email inválido, se muestra error`() = runTest {
-        // Dado
+    fun `when Register is clicked with an invalid email, an error is shown`() = runTest {
+        // Given
         viewModel.handleIntent(RegisterIntent.FullNameChanged("John Doe"))
         viewModel.handleIntent(RegisterIntent.EmailChanged("testexample.com"))
         viewModel.handleIntent(RegisterIntent.PasswordChanged("123456"))
         viewModel.handleIntent(RegisterIntent.ConfirmPasswordChanged("123456"))
 
-        // Cuando
+        // When
         viewModel.handleIntent(RegisterIntent.RegisterClicked)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Entonces
+        // Then
         val state = viewModel.state.first()
         assertEquals("Email inválido", state.errorMessage)
     }
 
     @Test
-    fun `si el usuario da click en Register con contraseña de menos de 6 caracteres, se muestra error`() = runTest {
-        // Dado
+    fun `when Register is clicked with a password less than 6 characters, an error is shown`() = runTest {
+        // Given
         viewModel.handleIntent(RegisterIntent.FullNameChanged("Jane Doe"))
         viewModel.handleIntent(RegisterIntent.EmailChanged("test@example.com"))
-        viewModel.handleIntent(RegisterIntent.PasswordChanged("12345")) // 5 caracteres
+        viewModel.handleIntent(RegisterIntent.PasswordChanged("12345")) // 5 characters
         viewModel.handleIntent(RegisterIntent.ConfirmPasswordChanged("12345"))
 
-        // Cuando
+        // When
         viewModel.handleIntent(RegisterIntent.RegisterClicked)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Entonces
+        // Then
         val state = viewModel.state.first()
         assertEquals("La contraseña debe tener al menos 6 caracteres", state.errorMessage)
     }
 
     @Test
-    fun `si el usuario da click en Register con contraseñas que no coinciden, se muestra error`() = runTest {
-        // Dado
+    fun `when Register is clicked with non-matching passwords, an error is shown`() = runTest {
+        // Given
         viewModel.handleIntent(RegisterIntent.FullNameChanged("Jane Doe"))
         viewModel.handleIntent(RegisterIntent.EmailChanged("test@example.com"))
         viewModel.handleIntent(RegisterIntent.PasswordChanged("123456"))
         viewModel.handleIntent(RegisterIntent.ConfirmPasswordChanged("654321"))
 
-        // Cuando
+        // When
         viewModel.handleIntent(RegisterIntent.RegisterClicked)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Entonces
+        // Then
         val state = viewModel.state.first()
         assertEquals("Las contraseñas no coinciden", state.errorMessage)
     }
 
     @Test
-    fun `si el usuario da click en Register con datos válidos y registerUseCase retorna Success, se setea registeredSuccess=true`() =
+    fun `when Register is clicked with valid data and registerUseCase returns Success, registeredSuccess is set to true`() =
         runTest {
-            // Dado
+            // Given
             val fullName = "Jane Doe"
             val email = "test@example.com"
             val password = "123456"
@@ -127,32 +127,31 @@ class RegisterViewModelTest {
                 every { uid } returns "UID_MOCK"
             }
 
-            // Preparar state con datos válidos
+            // Set up valid state
             viewModel.handleIntent(RegisterIntent.FullNameChanged(fullName))
             viewModel.handleIntent(RegisterIntent.EmailChanged(email))
             viewModel.handleIntent(RegisterIntent.PasswordChanged(password))
             viewModel.handleIntent(RegisterIntent.ConfirmPasswordChanged(password))
 
-            // Mock de respuesta exitosa del registerUseCase
+            // Mock successful response from registerUseCase
             coEvery { mockRegisterUseCase(email, password) } returns RegistrationRepositoryResult.Success(mockUser)
 
-            // Cuando
+            // When
             viewModel.handleIntent(RegisterIntent.RegisterClicked)
             testDispatcher.scheduler.advanceUntilIdle()
 
-            // Entonces
+            // Then
             val state = viewModel.state.first()
             assertTrue(state.registeredSuccess)
             assertFalse(state.isLoading)
             assertNull(state.errorMessage)
 
             coVerify(exactly = 1) { mockRegisterUseCase(email, password) }
-            // Verificación de UserInformationRepository eliminada
         }
 
     @Test
-    fun `cuando registerUseCase retorna Error, se refleja el mensaje de error en state`() = runTest {
-        // Dado
+    fun `when registerUseCase returns Error, the error message is reflected in the state`() = runTest {
+        // Given
         val fullName = "Jane Doe"
         val email = "test@example.com"
         val password = "123456"
@@ -164,11 +163,11 @@ class RegisterViewModelTest {
 
         coEvery { mockRegisterUseCase(email, password) } returns RegistrationRepositoryResult.Error("Error en registro")
 
-        // Cuando
+        // When
         viewModel.handleIntent(RegisterIntent.RegisterClicked)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Entonces
+        // Then
         val state = viewModel.state.first()
         assertEquals("Error en registro", state.errorMessage)
         assertFalse(state.isLoading)
@@ -176,17 +175,17 @@ class RegisterViewModelTest {
     }
 
     @Test
-    fun `cuando se envía ClearError, se limpia el error en el state`() = runTest {
-        // Dado: Forzamos un error
+    fun `when ClearError is sent, the error is cleared in the state`() = runTest {
+        // Given: Force an error
         viewModel.handleIntent(RegisterIntent.FullNameChanged(""))
         viewModel.handleIntent(RegisterIntent.RegisterClicked)
         testDispatcher.scheduler.advanceUntilIdle()
         assertNotNull(viewModel.state.first().errorMessage)
 
-        // Cuando
+        // When
         viewModel.handleIntent(RegisterIntent.ClearError)
 
-        // Entonces
+        // Then
         assertNull(viewModel.state.first().errorMessage)
     }
 }

@@ -1,6 +1,5 @@
 package com.luis.dev.meliapp.features.home.presentation.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,21 +26,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.luis.dev.meliapp.R
 import com.luis.dev.meliapp.ui.theme.PigmentGreen
 
+/**
+ * Componente que muestra una lista horizontal de categorías con sus imágenes y nombres.
+ * Incluye una tarjeta superior indicando la disponibilidad de envíos gratis.
+ *
+ * @param itemList Lista de pares donde el primer elemento es el nombre de la categoría y el segundo es la URL de la imagen.
+ */
 @Composable
-fun Categorias(
-    itemList: List<Pair<String, String>> // Name and image URL
-){
+fun CategoriesSection(
+    itemList: List<Pair<String, String>> // Nombre y URL de la imagen
+) {
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(
@@ -85,7 +88,7 @@ fun Categorias(
         modifier = Modifier
             .height(100.dp),
     ) {
-        items(itemList){
+        items(itemList) {
             CategoryItem(
                 title = it.first,
                 imageUrl = it.second
@@ -94,12 +97,17 @@ fun Categorias(
     }
 }
 
+/**
+ * Elemento individual de categoría que muestra una imagen dentro de un círculo y su nombre debajo.
+ *
+ * @param imageUrl URL de la imagen que representa la categoría.
+ * @param title Nombre de la categoría.
+ */
 @Composable
 fun CategoryItem(
     imageUrl: String,
     title: String
-){
-
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -116,9 +124,7 @@ fun CategoryItem(
             ),
             modifier = Modifier
                 .size(70.dp),
-            onClick = {
-
-            }
+            onClick = { }
         ) {
             AsyncImage(
                 model = imageUrl,
@@ -127,7 +133,6 @@ fun CategoryItem(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .padding(6.dp)
-
             )
         }
         Spacer(modifier = Modifier.height(4.dp))

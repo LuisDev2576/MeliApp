@@ -1,6 +1,5 @@
 package com.luis.dev.meliapp.navigation
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
@@ -15,19 +14,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.luis.dev.meliapp.features.details.presentation.DetailsScreen
-import com.luis.dev.meliapp.features.home.presentation.HomeScreen
-import com.luis.dev.meliapp.features.details.presentation.DetailsViewModel
-import com.luis.dev.meliapp.features.results.presentation.ResultsScreen
-import com.luis.dev.meliapp.features.results.presentation.ResultsViewModel
 import com.luis.dev.meliapp.core.components.searchTopAppBar.SearchBarViewModel
-import com.luis.dev.meliapp.core.components.searchTopAppBar.SearchTopAppBar
+import com.luis.dev.meliapp.core.components.searchTopAppBar.SearchTopBar
 import com.luis.dev.meliapp.features.authentication.presentation.login.LoginScreen
 import com.luis.dev.meliapp.features.authentication.presentation.login.LoginViewModel
 import com.luis.dev.meliapp.features.authentication.presentation.register.RegisterScreen
 import com.luis.dev.meliapp.features.authentication.presentation.register.RegisterViewModel
 import com.luis.dev.meliapp.features.authentication.presentation.reset.ResetPasswordScreen
 import com.luis.dev.meliapp.features.authentication.presentation.reset.ResetPasswordViewModel
+import com.luis.dev.meliapp.features.details.presentation.DetailsScreen
+import com.luis.dev.meliapp.features.details.presentation.DetailsViewModel
+import com.luis.dev.meliapp.features.home.presentation.HomeScreen
+import com.luis.dev.meliapp.features.results.presentation.ResultsScreen
+import com.luis.dev.meliapp.features.results.presentation.ResultsViewModel
 import kotlinx.serialization.ExperimentalSerializationApi
 import org.koin.androidx.compose.koinViewModel
 
@@ -51,11 +50,11 @@ fun AppNavigation() {
             if (currentRoute !in topBarExcludedRoutes) {
                 val searchBarViewModel: SearchBarViewModel = koinViewModel()
                 val searchBarState = searchBarViewModel.state.collectAsState()
-                SearchTopAppBar(
+                SearchTopBar(
                     state = searchBarState.value,
                     onIntent = { intent -> searchBarViewModel.handleIntent(intent) },
                     modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
-                    navToResultScreen = { productName ->
+                    onNavigateToResultScreen = { productName ->
                         navController.navigate(Route.Results(productName))
                     }
                 )

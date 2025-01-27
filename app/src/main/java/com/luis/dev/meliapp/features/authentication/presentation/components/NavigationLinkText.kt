@@ -15,8 +15,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
+/**
+ * Componente que muestra un texto de navegación compuesto por un texto primario estático y un texto secundario interactivo.
+ *
+ * @param primaryTextId ID del recurso de texto que se mostrará como texto primario.
+ * @param secondaryTextId ID del recurso de texto que se mostrará como texto secundario interactivo.
+ * @param onClick Acción que se ejecuta cuando el usuario hace clic en el texto secundario.
+ * @param modifier Modificador opcional para personalizar el estilo y el diseño del componente.
+ */
 @Composable
-fun NavigationTextButton(
+fun NavigationLinkText(
     primaryTextId: Int,
     secondaryTextId: Int,
     onClick: () -> Unit,

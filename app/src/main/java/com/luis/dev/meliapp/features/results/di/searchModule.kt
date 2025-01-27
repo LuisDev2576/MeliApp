@@ -11,18 +11,25 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 /**
- * Módulo de Koin específico para la feature de búsqueda (search).
+ * Módulo de Koin para la configuración de dependencias relacionadas con los resultados de búsqueda.
+ * Proporciona instancias del DataSource, Repositorio, Caso de Uso y ViewModel.
  */
 val resultsModule = module {
 
-    // DataSource para la búsqueda
+    /**
+     * Proporciona una implementación de [ResultsDataSource] para interactuar con la API y obtener resultados de búsqueda.
+     * Utiliza un cliente HTTP proporcionado por la dependencia de Koin.
+     */
     single<ResultsDataSource> {
         ResultsDataSourceImpl(
             httpClient = get()
         )
     }
 
-    // Repository
+    /**
+     * Proporciona una implementación de [ResultsRepository] para manejar la lógica de negocio relacionada
+     * con los resultados de búsqueda. Incluye un sitio predeterminado ("MLA" para Argentina).
+     */
     single<ResultsRepository> {
         ResultsRepositoryImpl(
             dataSource = get(),
@@ -30,12 +37,18 @@ val resultsModule = module {
         )
     }
 
-    // UseCase
+    /**
+     * Proporciona una implementación de [GetResultsUseCase] para encapsular la lógica
+     * de obtención de resultados de búsqueda desde el repositorio.
+     */
     single<GetResultsUseCase> {
         GetResultsUseCaseImpl(repository = get())
     }
 
-    // ViewModel
+    /**
+     * Proporciona una instancia de [ResultsViewModel] para manejar el estado y la lógica de la pantalla de resultados de búsqueda.
+     * Depende del caso de uso [GetResultsUseCase] y del [SavedStateHandle].
+     */
     viewModel {
         ResultsViewModel(
             getResultsUseCase = get(),

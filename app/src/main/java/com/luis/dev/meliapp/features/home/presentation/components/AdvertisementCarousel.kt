@@ -12,29 +12,31 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.google.accompanist.pager.*
 import com.luis.dev.meliapp.R
 import kotlinx.coroutines.launch
 
+/**
+ * Carrusel de publicidad que muestra imágenes en un desplazamiento horizontal infinito,
+ * con un efecto de cambio automático de página cada 5 segundos.
+ *
+ * @param imageList Lista de URLs de las imágenes que se mostrarán en el carrusel.
+ * @param modifier Modificador opcional para personalizar el diseño del carrusel.
+ */
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun CarruselPublicidad(
+fun AdvertisementCarousel(
     imageList: List<String>,
     modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState(
-        // Establece la página inicial en el centro para permitir desplazamiento infinito
         initialPage = Int.MAX_VALUE / 2
     )
 
-    // Obtener el índice de la imagen actual
-    val currentPage = pagerState.currentPage
-    val actualPage = currentPage % imageList.size
+    val coroutineScope = rememberCoroutineScope()
 
     Box(
         modifier = modifier
@@ -46,7 +48,7 @@ fun CarruselPublicidad(
                         Color.White
                     )
                 )
-            )// Ajusta el padding según tus necesidades
+            )
     ) {
         HorizontalPager(
             count = Int.MAX_VALUE,
@@ -54,19 +56,16 @@ fun CarruselPublicidad(
             contentPadding = PaddingValues(horizontal = 16.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp) // Ajusta la altura según tus necesidades
+                .height(200.dp)
         ) { page ->
-            // Calcula la posición real de la imagen
             val index = page % imageList.size
             CarouselItem(imageUrl = imageList[index])
         }
     }
 
-    // Opcional: Animación automática para cambiar de página
-    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
         while (true) {
-            kotlinx.coroutines.delay(5000) // Cambia cada 3 segundos
+            kotlinx.coroutines.delay(5000)
             coroutineScope.launch {
                 pagerState.animateScrollToPage(pagerState.currentPage + 1)
             }
@@ -74,6 +73,11 @@ fun CarruselPublicidad(
     }
 }
 
+/**
+ * Elemento individual dentro del carrusel que muestra una imagen publicitaria.
+ *
+ * @param imageUrl URL de la imagen que se mostrará en el elemento del carrusel.
+ */
 @Composable
 private fun CarouselItem(imageUrl: String) {
     AsyncImage(
@@ -87,8 +91,6 @@ private fun CarouselItem(imageUrl: String) {
             .height(170.dp)
             .clip(RoundedCornerShape(8.dp))
             .fillMaxWidth()
-            .clickable{
-
-            }
+            .clickable { }
     )
 }

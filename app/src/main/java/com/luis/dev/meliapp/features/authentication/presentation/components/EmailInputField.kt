@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -17,33 +18,47 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.luis.dev.meliapp.R
 
+/**
+ * Campo de texto personalizado para ingresar un correo electrónico.
+ *
+ * @param email Texto que representa el correo electrónico ingresado.
+ * @param onEmailChange Callback que se ejecuta cuando el usuario modifica el texto del correo electrónico.
+ * @param hasError Indica si hay un error de validación en el campo de texto.
+ * @param onDone Callback opcional que se ejecuta cuando el usuario presiona el botón "Done" en el teclado.
+ * Si no se proporciona, el foco se moverá al siguiente elemento.
+ */
 @Composable
-fun NameTextField(
-    name: String,
-    onNameChange: (String) -> Unit,
-    isError: Boolean
+fun EmailInputField(
+    email: String,
+    onEmailChange: (String) -> Unit,
+    hasError: Boolean,
+    onDone: (() -> Unit)? = null
 ) {
     val focusManager = LocalFocusManager.current
 
     Column(modifier = Modifier.fillMaxWidth()) {
         OutlinedTextField(
-            value = name,
+            value = email,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             singleLine = true,
-            onValueChange = { onNameChange(it) },
+            onValueChange = { onEmailChange(it) },
             textStyle = MaterialTheme.typography.bodyLarge,
             placeholder = {
                 Text(
-                    text = stringResource(id = R.string.name_placeholder),
+                    text = stringResource(id = R.string.email_placeholder),
                     style = MaterialTheme.typography.bodyLarge
                 )
             },
             keyboardActions = KeyboardActions(
-                onDone = { focusManager.moveFocus(FocusDirection.Down) }
+                onDone = {
+                    onDone?.invoke() ?: focusManager.moveFocus(FocusDirection.Down)
+                }
             ),
-            isError = isError,
+            isError = hasError,
             shape = RoundedCornerShape(20),
             modifier = Modifier
                 .widthIn(max = 600.dp)
@@ -52,7 +67,7 @@ fun NameTextField(
                 .align(Alignment.CenterHorizontally),
             colors = TextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 disabledTextColor = MaterialTheme.colorScheme.onSurface,
                 errorTextColor = MaterialTheme.colorScheme.error,
                 focusedContainerColor = MaterialTheme.colorScheme.background,

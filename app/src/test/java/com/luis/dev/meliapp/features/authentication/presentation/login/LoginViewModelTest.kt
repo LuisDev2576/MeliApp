@@ -37,74 +37,74 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `cuando se actualiza email, se refleja en el state y limpia error`() = runTest {
-        // Dado
+    fun `when email is updated, it is reflected in the state and clears error`() = runTest {
+        // Given
         val email = "test@example.com"
 
-        // Cuando
+        // When
         viewModel.handleIntent(LoginIntent.EmailChanged(email))
 
-        // Entonces
+        // Then
         val state = viewModel.state.first()
         assertEquals(email, state.email)
         assertNull(state.errorMessage)
     }
 
     @Test
-    fun `cuando se actualiza password, se refleja en el state y limpia error`() = runTest {
-        // Dado
+    fun `when password is updated, it is reflected in the state and clears error`() = runTest {
+        // Given
         val password = "123456"
 
-        // Cuando
+        // When
         viewModel.handleIntent(LoginIntent.PasswordChanged(password))
 
-        // Entonces
+        // Then
         val state = viewModel.state.first()
         assertEquals(password, state.password)
         assertNull(state.errorMessage)
     }
 
     @Test
-    fun `cuando se hace login con email inválido, se setea errorMessage`() = runTest {
-        // Dado
+    fun `when login is attempted with invalid email, errorMessage is set`() = runTest {
+        // Given
         val invalidEmail = "notanemail"
 
         viewModel.handleIntent(LoginIntent.EmailChanged(invalidEmail))
         viewModel.handleIntent(LoginIntent.PasswordChanged("123456"))
 
-        // Cuando
+        // When
         viewModel.handleIntent(LoginIntent.LoginClicked)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Entonces
+        // Then
         val state = viewModel.state.first()
         assertEquals("Email inválido", state.errorMessage)
         assertFalse(state.isLoading)
     }
 
     @Test
-    fun `cuando se hace login con contraseña inválida, se setea errorMessage`() = runTest {
-        // Dado
+    fun `when login is attempted with invalid password, errorMessage is set`() = runTest {
+        // Given
         viewModel.handleIntent(LoginIntent.EmailChanged("test@example.com"))
-        viewModel.handleIntent(LoginIntent.PasswordChanged("123")) // menor a 6 chars
+        viewModel.handleIntent(LoginIntent.PasswordChanged("123")) // Less than 6 chars
 
-        // Cuando
+        // When
         viewModel.handleIntent(LoginIntent.LoginClicked)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Entonces
+        // Then
         val state = viewModel.state.first()
         assertEquals("La contraseña debe tener al menos 6 caracteres", state.errorMessage)
         assertFalse(state.isLoading)
     }
 
     @Test
-    fun `cuando loginUseCase retorna Success, state se setea success=true`() = runTest {
+    fun `when loginUseCase returns Success, state is set to success=true`() = runTest {
         // Given
         val email = "test@example.com"
         val password = "123456"
         val mockUser = mockk<FirebaseUser> {
-            every { uid } returns "UID123" // Mocking the uid property
+            every { uid } returns "UID123"
         }
         viewModel.handleIntent(LoginIntent.EmailChanged(email))
         viewModel.handleIntent(LoginIntent.PasswordChanged(password))
@@ -122,12 +122,11 @@ class LoginViewModelTest {
         assertNull(state.errorMessage)
 
         coVerify(exactly = 1) { mockLoginUseCase(email, password) }
-        // Verificación de UserInformationRepository eliminada
     }
 
     @Test
-    fun `cuando loginUseCase retorna Error, se setea errorMessage`() = runTest {
-        // Dado
+    fun `when loginUseCase returns Error, errorMessage is set`() = runTest {
+        // Given
         val email = "test@example.com"
         val password = "123456"
         val error = "Usuario o contraseña incorrectos"
@@ -137,11 +136,11 @@ class LoginViewModelTest {
 
         coEvery { mockLoginUseCase(email, password) } returns AuthRepositoryResult.Error(error)
 
-        // Cuando
+        // When
         viewModel.handleIntent(LoginIntent.LoginClicked)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Entonces
+        // Then
         val state = viewModel.state.first()
         assertFalse(state.isLoading)
         assertFalse(state.success)
@@ -149,17 +148,17 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `cuando se envía ClearError, se limpia el error en el state`() = runTest {
-        // Dado un error anterior
+    fun `when ClearError is sent, error is cleared in the state`() = runTest {
+        // Given a previous error
         viewModel.handleIntent(LoginIntent.EmailChanged("bademail"))
         viewModel.handleIntent(LoginIntent.LoginClicked)
         testDispatcher.scheduler.advanceUntilIdle()
         assertNotNull(viewModel.state.first().errorMessage)
 
-        // Cuando
+        // When
         viewModel.handleIntent(LoginIntent.ClearError)
 
-        // Entonces
+        // Then
         assertNull(viewModel.state.first().errorMessage)
     }
 }

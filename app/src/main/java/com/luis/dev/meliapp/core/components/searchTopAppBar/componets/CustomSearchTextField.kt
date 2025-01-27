@@ -28,6 +28,16 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
+/**
+ * Campo de texto personalizado para realizar búsquedas, con diseño redondeado e icono de búsqueda.
+ *
+ * @param modifier Modificador opcional para personalizar el estilo y comportamiento del campo de texto.
+ * @param placeholderText Texto que se muestra como marcador de posición cuando el campo está vacío.
+ * @param fontSize Tamaño de fuente para el texto ingresado y el marcador de posición.
+ * @param value Texto actual ingresado en el campo.
+ * @param onValueChange Callback que se ejecuta cuando el usuario modifica el texto ingresado.
+ * @param onDoneActionClick Callback que se ejecuta cuando el usuario presiona el botón "Done" en el teclado.
+ */
 @Composable
 fun CustomSearchTextField(
     modifier: Modifier = Modifier,
@@ -48,16 +58,14 @@ fun CustomSearchTextField(
                 MaterialTheme.shapes.small,
             )
             .fillMaxWidth()
-            .focusRequester(focusRequester), // Asignamos el focusRequester
+            .focusRequester(focusRequester),
         value = value,
         onValueChange = {
             onValueChange(it)
         },
         keyboardActions = KeyboardActions(
             onDone = {
-                // Llamamos a la acción personalizada
                 onDoneActionClick()
-                // Limpiamos el foco
                 focusManager.clearFocus()
             }
         ),
@@ -95,3 +103,5 @@ fun CustomSearchTextField(
         }
     )
 }
+
+

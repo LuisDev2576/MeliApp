@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.luis.dev.meliapp.R
-import com.luis.dev.meliapp.core.utils.toHttps
+import com.luis.dev.meliapp.core.utils.convertToHttps
 
 
 /**
@@ -23,7 +23,7 @@ import com.luis.dev.meliapp.core.utils.toHttps
  */
 @Composable
 fun ResultItemProductThumbnail(thumbnailUrl: String, title: String) {
-    val secureThumbnailUrl = thumbnailUrl.toHttps()
+    val secureThumbnailUrl = thumbnailUrl.convertToHttps()
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(secureThumbnailUrl)

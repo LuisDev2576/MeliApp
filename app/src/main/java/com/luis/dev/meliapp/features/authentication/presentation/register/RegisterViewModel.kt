@@ -10,30 +10,43 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
+/**
+ * ViewModel para gestionar el estado y la lógica del flujo de registro de usuarios.
+ *
+ * @param registerUseCase Caso de uso para manejar la lógica de registro de usuarios.
+ */
 class RegisterViewModel(
     private val registerUseCase: RegisterUseCase
 ) : ViewModel() {
 
+    /**
+     * Estado interno mutable del registro.
+     */
     private val _state = MutableStateFlow(RegisterState())
+
+    /**
+     * Estado público inmutable que representa el estado actual del registro.
+     */
     val state: StateFlow<RegisterState> get() = _state
 
+    /**
+     * Maneja las intenciones enviadas desde la vista, actualizando el estado o ejecutando acciones según corresponda.
+     *
+     * @param intent Intención del usuario, como cambios en los campos de texto o iniciar el registro.
+     */
     fun handleIntent(intent: RegisterIntent) {
         when (intent) {
             is RegisterIntent.FullNameChanged -> {
-                _state.value = _state.value.copy(fullName = intent.name)
-                _state.value = _state.value.copy(errorMessage = null)
+                _state.value = _state.value.copy(fullName = intent.name, errorMessage = null)
             }
             is RegisterIntent.EmailChanged -> {
-                _state.value = _state.value.copy(email = intent.email)
-                _state.value = _state.value.copy(errorMessage = null)
+                _state.value = _state.value.copy(email = intent.email, errorMessage = null)
             }
             is RegisterIntent.PasswordChanged -> {
-                _state.value = _state.value.copy(password = intent.password)
-                _state.value = _state.value.copy(errorMessage = null)
+                _state.value = _state.value.copy(password = intent.password, errorMessage = null)
             }
             is RegisterIntent.ConfirmPasswordChanged -> {
-                _state.value = _state.value.copy(confirmPassword = intent.confirmPassword)
-                _state.value = _state.value.copy(errorMessage = null)
+                _state.value = _state.value.copy(confirmPassword = intent.confirmPassword, errorMessage = null)
             }
             is RegisterIntent.RegisterClicked -> {
                 register()
@@ -44,11 +57,14 @@ class RegisterViewModel(
         }
     }
 
+    /**
+     * Realiza la operación de registro, validando los datos ingresados y llamando al caso de uso.
+     * Actualiza el estado según el resultado de la operación.
+     */
     private fun register() {
         viewModelScope.launch {
             val current = _state.value
 
-            // Validaciones locales
             if (current.fullName.isBlank()) {
                 _state.value = current.copy(errorMessage = "El nombre no puede estar vacío")
                 return@launch
@@ -83,6 +99,12 @@ class RegisterViewModel(
         }
     }
 
+    /**
+     * Valida si el correo electrónico ingresado cumple con un formato válido.
+     *
+     * @param email Correo electrónico a validar.
+     * @return `true` si el correo es válido, de lo contrario `false`.
+     */
     private fun isEmailValid(email: String): Boolean {
         val pattern = Pattern.compile(
             "^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$",
@@ -91,3 +113,4 @@ class RegisterViewModel(
         return pattern.matcher(email).matches()
     }
 }
+

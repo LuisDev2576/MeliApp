@@ -1,7 +1,7 @@
 package com.luis.dev.meliapp.features.authentication.data.repository
 
 import com.google.firebase.auth.FirebaseUser
-import com.luis.dev.meliapp.features.authentication.data.datasource.AuthDataSource
+import com.luis.dev.meliapp.features.authentication.data.datasource.AuthenticationDataSource
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -12,7 +12,7 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class AuthRepositoryImplTest {
 
-    private val mockDataSource = mockk<AuthDataSource>()
+    private val mockDataSource = mockk<AuthenticationDataSource>()
     private lateinit var repository: AuthRepositoryImpl
 
     @Before

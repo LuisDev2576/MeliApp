@@ -36,73 +36,73 @@ class ResetPasswordViewModelTest {
     }
 
     @Test
-    fun `cuando se envía EmailChanged, el state se actualiza con el nuevo email y limpia error`() = runTest {
-        // Dado
+    fun `when EmailChanged is sent, the state is updated with the new email and error is cleared`() = runTest {
+        // Given
         val newEmail = "test@example.com"
 
-        // Cuando
+        // When
         viewModel.handleIntent(ResetPasswordIntent.EmailChanged(newEmail))
 
-        // Entonces
+        // Then
         val currentState = viewModel.state.first()
         assertEquals(newEmail, currentState.email)
         assertNull(currentState.errorMessage)
     }
 
     @Test
-    fun `cuando se envía ResetClicked con email inválido, se muestra mensaje de error`() = runTest {
-        // Dado un email inválido
+    fun `when ResetClicked is sent with an invalid email, error message is shown`() = runTest {
+        // Given an invalid email
         val invalidEmail = "testexample.com"
         viewModel.handleIntent(ResetPasswordIntent.EmailChanged(invalidEmail))
 
-        // Cuando
+        // When
         viewModel.handleIntent(ResetPasswordIntent.ResetClicked)
-        // Avanzamos corrutinas
+        // Advance coroutines
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Entonces
+        // Then
         val currentState = viewModel.state.first()
         assertEquals("Email inválido", currentState.errorMessage)
         assertFalse(currentState.isLoading)
     }
 
     @Test
-    fun `cuando se envía ResetClicked con email válido y useCase retorna Success, se setea resetEmailSent=true`() = runTest {
-        // Dado un email válido
+    fun `when ResetClicked is sent with a valid email and useCase returns Success, resetEmailSent is set to true`() = runTest {
+        // Given a valid email
         val validEmail = "test@example.com"
         viewModel.handleIntent(ResetPasswordIntent.EmailChanged(validEmail))
 
-        // Mock de la respuesta exitosa
+        // Mock successful response
         coEvery { mockResetPasswordUseCase.invoke(validEmail) } returns ResetPasswordRepositoryResult.Success(Unit)
 
-        // Cuando
+        // When
         viewModel.handleIntent(ResetPasswordIntent.ResetClicked)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Entonces
+        // Then
         val currentState = viewModel.state.first()
         assertTrue(currentState.resetEmailSent)
         assertFalse(currentState.isLoading)
         assertNull(currentState.errorMessage)
 
-        // Verificamos que se haya llamado una sola vez
+        // Verify that it was called once
         coVerify(exactly = 1) { mockResetPasswordUseCase.invoke(validEmail) }
     }
 
     @Test
-    fun `cuando se envía ResetClicked con email válido y useCase retorna Error, se setea errorMessage`() = runTest {
-        // Dado un email válido
+    fun `when ResetClicked is sent with a valid email and useCase returns Error, errorMessage is set`() = runTest {
+        // Given a valid email
         val validEmail = "test@example.com"
         viewModel.handleIntent(ResetPasswordIntent.EmailChanged(validEmail))
 
-        // Mock de error
+        // Mock error
         coEvery { mockResetPasswordUseCase.invoke(validEmail) } returns ResetPasswordRepositoryResult.Error("Error al resetear contraseña")
 
-        // Cuando
+        // When
         viewModel.handleIntent(ResetPasswordIntent.ResetClicked)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Entonces
+        // Then
         val currentState = viewModel.state.first()
         assertFalse(currentState.isLoading)
         assertFalse(currentState.resetEmailSent)
@@ -110,19 +110,20 @@ class ResetPasswordViewModelTest {
     }
 
     @Test
-    fun `cuando se envía ClearError, se pone errorMessage en null`() = runTest {
-        // Dado que tenemos un error actual
+    fun `when ClearError is sent, errorMessage is set to null`() = runTest {
+        // Given we have an existing error
         viewModel.handleIntent(ResetPasswordIntent.EmailChanged("invalid"))
         viewModel.handleIntent(ResetPasswordIntent.ResetClicked)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Estado con error
+        // State with error
         assertNotNull(viewModel.state.first().errorMessage)
 
-        // Cuando
+        // When
         viewModel.handleIntent(ResetPasswordIntent.ClearError)
 
-        // Entonces
+        // Then
         assertNull(viewModel.state.first().errorMessage)
     }
 }
+

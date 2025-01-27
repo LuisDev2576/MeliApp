@@ -13,8 +13,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.luis.dev.meliapp.R
 
+/**
+ * Botón de texto interactivo para navegar a la pantalla de recuperación de contraseña.
+ *
+ * @param onClick Acción que se ejecuta cuando el usuario hace clic en el botón.
+ * @param modifier Modificador opcional para personalizar el estilo y el diseño del componente.
+ */
 @Composable
-fun NavToRestartPasswordButton(
+fun ResetPasswordNavigationButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {

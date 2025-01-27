@@ -1,87 +1,61 @@
 package com.luis.dev.meliapp.features.authentication.presentation.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.luis.dev.meliapp.R
 
+/**
+ * Campo de texto personalizado para ingresar un nombre.
+ *
+ * @param name Texto que representa el nombre ingresado.
+ * @param onNameChange Callback que se ejecuta cuando el usuario modifica el texto del nombre.
+ * @param hasError Indica si hay un error de validación en el campo de texto.
+ */
 @Composable
-fun ConfirmPasswordTextField(
-    password: String,
-    onPasswordChange: (String) -> Unit,
-    isError: Boolean,
-    onDone: () -> Unit,
+fun NameInputField(
+    name: String,
+    onNameChange: (String) -> Unit,
+    hasError: Boolean
 ) {
     val focusManager = LocalFocusManager.current
-    var visibility by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         OutlinedTextField(
-            value = password,
-            onValueChange = { onPasswordChange(it) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            trailingIcon = {
-                when (visibility) {
-                    false -> {
-                        Icon(
-                            imageVector = Icons.Default.Visibility,
-                            contentDescription = null,
-                            modifier = Modifier.clickable { visibility = true }
-                        )
-                    }
-                    true -> {
-                        Icon(
-                            imageVector = Icons.Default.VisibilityOff,
-                            contentDescription = null,
-                            modifier = Modifier.clickable { visibility = false }
-                        )
-                    }
-                }
-            },
-            textStyle = MaterialTheme.typography.bodyLarge,
-            visualTransformation = if (visibility) VisualTransformation.None else PasswordVisualTransformation(),
+            value = name,
             singleLine = true,
+            onValueChange = { onNameChange(it) },
+            textStyle = MaterialTheme.typography.bodyLarge,
             placeholder = {
                 Text(
-                    text = stringResource(id = R.string.confirm_password_placeholder),
+                    text = stringResource(id = R.string.name_placeholder),
                     style = MaterialTheme.typography.bodyLarge
                 )
             },
-            keyboardActions = KeyboardActions(onDone = {
-                focusManager.clearFocus()
-                onDone()
-            }),
-            isError = isError,
+            keyboardActions = KeyboardActions(
+                onDone = { focusManager.moveFocus(FocusDirection.Down) }
+            ),
+            isError = hasError,
             shape = RoundedCornerShape(20),
             modifier = Modifier
                 .widthIn(max = 600.dp)
                 .fillMaxWidth()
+                .height(60.dp)
                 .align(Alignment.CenterHorizontally),
             colors = TextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -102,10 +76,6 @@ fun ConfirmPasswordTextField(
                 unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurface,
                 disabledPlaceholderColor = MaterialTheme.colorScheme.onSurface,
                 errorPlaceholderColor = MaterialTheme.colorScheme.error,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
-                unfocusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
-                disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
-                errorTrailingIconColor = MaterialTheme.colorScheme.onSurface,
             )
         )
     }

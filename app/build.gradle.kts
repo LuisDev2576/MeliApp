@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -22,13 +23,16 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.getByName("debug")
         }
+    }
+    firebaseCrashlytics {
+        mappingFileUploadEnabled = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -107,6 +111,7 @@ dependencies {
     implementation (libs.firebase.auth.ktx)
     implementation (libs.firebase.firestore.ktx)
     implementation (libs.firebase.storage.ktx)
+    implementation (libs.firebase.crashlytics.ktx)
 
     // Material Extended Icons
     implementation(libs.androidx.material.icons.extended)

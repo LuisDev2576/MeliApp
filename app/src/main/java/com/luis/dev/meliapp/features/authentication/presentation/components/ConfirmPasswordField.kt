@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -33,64 +32,58 @@ import androidx.compose.ui.unit.dp
 import com.luis.dev.meliapp.R
 
 /**
- * Campo de texto personalizado para ingresar contraseñas.
- * Incluye funcionalidad para mostrar/ocultar la contraseña y opciones para manejar el enfoque al completar.
+ * Campo de texto personalizado para confirmar contraseñas.
+ * Incluye la funcionalidad de mostrar u ocultar la contraseña y manejar errores de validación.
  *
- * @param password Texto que representa la contraseña ingresada.
- * @param onPasswordChange Callback que se ejecuta cuando el usuario modifica el texto de la contraseña.
- * @param isError Indica si hay un error de validación en el campo de texto.
- * @param onDone Callback que se ejecuta cuando el usuario presiona el botón "Done" en el teclado.
- * @param clearFocusOnDone Indica si el foco debe eliminarse al completar (true) o moverse al siguiente campo (false).
+ * @param confirmPassword Texto que representa la contraseña ingresada.
+ * @param onConfirmPasswordChange Callback que se ejecuta cuando el usuario cambia el texto de la contraseña.
+ * @param hasError Indica si hay un error de validación en el campo de texto.
+ * @param onDone Callback que se ejecuta cuando el usuario completa la acción (por ejemplo, presionando el botón "Done").
  */
 @Composable
-fun PasswordTextField(
-    password: String,
-    onPasswordChange: (String) -> Unit,
-    isError: Boolean,
+fun ConfirmPasswordField(
+    confirmPassword: String,
+    onConfirmPasswordChange: (String) -> Unit,
+    hasError: Boolean,
     onDone: () -> Unit,
-    clearFocusOnDone: Boolean = false
 ) {
     val focusManager = LocalFocusManager.current
-    var visibility by remember { mutableStateOf(false) }
+    var isPasswordVisible by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         OutlinedTextField(
-            value = password,
-            onValueChange = { onPasswordChange(it) },
+            value = confirmPassword,
+            onValueChange = { onConfirmPasswordChange(it) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             trailingIcon = {
-                if (visibility) {
+                if (isPasswordVisible) {
                     Icon(
                         imageVector = Icons.Default.VisibilityOff,
                         contentDescription = null,
-                        modifier = Modifier.clickable { visibility = false }
+                        modifier = Modifier.clickable { isPasswordVisible = false }
                     )
                 } else {
                     Icon(
                         imageVector = Icons.Default.Visibility,
                         contentDescription = null,
-                        modifier = Modifier.clickable { visibility = true }
+                        modifier = Modifier.clickable { isPasswordVisible = true }
                     )
                 }
             },
             textStyle = MaterialTheme.typography.bodyLarge,
-            visualTransformation = if (visibility) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             singleLine = true,
             placeholder = {
                 Text(
-                    text = stringResource(id = R.string.password_placeholder),
+                    text = stringResource(id = R.string.confirm_password_placeholder),
                     style = MaterialTheme.typography.bodyLarge
                 )
             },
             keyboardActions = KeyboardActions(onDone = {
-                if (clearFocusOnDone) {
-                    focusManager.clearFocus()
-                } else {
-                    focusManager.moveFocus(FocusDirection.Next)
-                }
+                focusManager.clearFocus()
                 onDone()
             }),
-            isError = isError,
+            isError = hasError,
             shape = RoundedCornerShape(20),
             modifier = Modifier
                 .widthIn(max = 600.dp)
@@ -98,7 +91,7 @@ fun PasswordTextField(
                 .align(Alignment.CenterHorizontally),
             colors = TextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 disabledTextColor = MaterialTheme.colorScheme.onSurface,
                 errorTextColor = MaterialTheme.colorScheme.error,
                 focusedContainerColor = MaterialTheme.colorScheme.background,
@@ -123,3 +116,4 @@ fun PasswordTextField(
         )
     }
 }
+
