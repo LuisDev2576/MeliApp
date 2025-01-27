@@ -25,12 +25,12 @@ fun HomeScreen(
     ) {
         AdvertisementCarousel(
             imageList = listOf(
-                "https://github-production-user-asset-6210df.s3.amazonaws.com/123314822/406834073-ad8e77a1-2bb2-43c4-a5dd-b5da22c9197c.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250127%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250127T074620Z&X-Amz-Expires=300&X-Amz-Signature=9ca4fb26be83400740fe28627c5401aea03a4f1892e9d0d05efbea705e9ee4a5&X-Amz-SignedHeaders=host",
-                "https://github-production-user-asset-6210df.s3.amazonaws.com/123314822/406834615-9b889250-482b-439b-8f54-90565443d0c5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250127%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250127T074555Z&X-Amz-Expires=300&X-Amz-Signature=cf4cc3a934f9c43b7a2d84e4559493f3b49295974861eb519d02875be8c4abdb&X-Amz-SignedHeaders=host",
-                "https://github-production-user-asset-6210df.s3.amazonaws.com/123314822/406835153-de129552-c756-43d3-bf9f-0762a0893f57.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250127%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250127T074706Z&X-Amz-Expires=300&X-Amz-Signature=714542a1e86d9a185ff4085634cf25b4fdb6c35b91448edd1e21b32fce55ad18&X-Amz-SignedHeaders=host",
-                "https://github-production-user-asset-6210df.s3.amazonaws.com/123314822/406835282-648935eb-5f97-4fae-8a3a-44bcb48299ed.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250127%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250127T074742Z&X-Amz-Expires=300&X-Amz-Signature=cfd610ffa31952e0b41b351b3dbc2ead1bba256a1a768f9b88db00fbec2c2de2&X-Amz-SignedHeaders=host",
-                "https://github-production-user-asset-6210df.s3.amazonaws.com/123314822/406835381-bf1a89a1-61e5-49bc-9ac5-24c38058da17.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250127%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250127T074809Z&X-Amz-Expires=300&X-Amz-Signature=7efb895b2c0c89b062650ca211a8c7f82fe553084be1780bd12528561245564f&X-Amz-SignedHeaders=host",
-            )
+                "https://i.postimg.cc/pdDfhHzJ/Captura-de-pantalla-de-2025-01-27-02-17-26.png",
+                "https://i.postimg.cc/43q3g7m8/Captura-de-pantalla-de-2025-01-27-02-17-11.png",
+                "https://i.postimg.cc/h4H3dS7H/Captura-de-pantalla-de-2025-01-27-02-16-59.png",
+                "https://i.postimg.cc/GpWsjSJh/Captura-de-pantalla-de-2025-01-27-02-16-42.png",
+                "https://i.postimg.cc/kgV4hv5V/Captura-de-pantalla-de-2025-01-27-02-16-16.png",
+             )
         )
         CategoriesSection(
             itemList = listOf(
@@ -46,7 +46,7 @@ fun HomeScreen(
             )
         )
         AdvertisementBanner(
-            imageUrl = "https://github-production-user-asset-6210df.s3.amazonaws.com/123314822/406836167-7824a066-044a-4af8-a3e9-ffe14f38d04b.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250127%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250127T075141Z&X-Amz-Expires=300&X-Amz-Signature=8225d4c8f5e4b3e92169d1b9d4dbb1e77f6341bdc7a52c4277d1909aa0ae0ae3&X-Amz-SignedHeaders=host"
+            imageUrl = "https://i.postimg.cc/RCsv5Jyw/Captura-de-pantalla-de-2025-01-27-02-17-52.png"
         )
     }
 
