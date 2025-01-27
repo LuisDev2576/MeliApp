@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "887034264006",
+    "project_id": "meliapp-e99b9",
+    "storage_bucket": "meliapp-e99b9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887034264006:android:3ae9c036905cca3cc31ac7",
+        "android_client_info": {
+          "package_name": "com.luis.dev.meliapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCTd6tbHn7YNFySG0os6W31jzPNy38XMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

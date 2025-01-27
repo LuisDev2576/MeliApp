@@ -63,7 +63,7 @@ fun AppNavigation() {
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = Route.Home,
+            startDestination = Route.Login,
             modifier = Modifier
                 .padding(padding)
         ) {
