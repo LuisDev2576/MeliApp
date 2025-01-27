@@ -14,7 +14,6 @@ interface AuthRepository {
     fun logout()
 }
 
-// Ejemplo de sealed classes para login, register y reset password.
 sealed class AuthRepositoryResult<out T> {
     data class Success<out T>(val data: T) : AuthRepositoryResult<T>()
     data class Error(val message: String) : AuthRepositoryResult<Nothing>()

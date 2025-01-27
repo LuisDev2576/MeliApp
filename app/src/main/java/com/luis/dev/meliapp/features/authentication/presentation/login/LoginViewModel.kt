@@ -4,15 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.luis.dev.meliapp.features.authentication.data.repository.AuthRepositoryResult
 import com.luis.dev.meliapp.features.authentication.domain.usecases.LoginUseCase
-import com.luis.dev.meliapp.features.authentication.data.repository.UserInformationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 class LoginViewModel(
-    private val loginUseCase: LoginUseCase,
-    private val userInformationRepository: UserInformationRepository
+    private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
@@ -22,9 +20,11 @@ class LoginViewModel(
         when (intent) {
             is LoginIntent.EmailChanged -> {
                 _state.value = _state.value.copy(email = intent.email)
+                _state.value = _state.value.copy(errorMessage = null)
             }
             is LoginIntent.PasswordChanged -> {
                 _state.value = _state.value.copy(password = intent.password)
+                _state.value = _state.value.copy(errorMessage = null)
             }
             is LoginIntent.LoginClicked -> {
                 login()
@@ -55,12 +55,6 @@ class LoginViewModel(
             val result = loginUseCase(current.email, current.password)
             when (result) {
                 is AuthRepositoryResult.Success -> {
-                    // Descarga la información extra del usuario, si lo deseas
-                    val user = result.data
-                    val userInfo = userInformationRepository.downloadUserInformation(user.uid)
-
-                    // userInfo puede ser nulo o no
-                    // Si no es nulo, guardarlo, etc.
                     _state.value = _state.value.copy(isLoading = false, success = true)
                 }
                 is AuthRepositoryResult.Error -> {
@@ -74,7 +68,10 @@ class LoginViewModel(
     }
 
     private fun isEmailValid(email: String): Boolean {
-        val pattern = Pattern.compile("^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$", Pattern.CASE_INSENSITIVE)
+        val pattern = Pattern.compile(
+            "^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$",
+            Pattern.CASE_INSENSITIVE
+        )
         return pattern.matcher(email).matches()
     }
 

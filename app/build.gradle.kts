@@ -87,6 +87,9 @@ dependencies {
     // Kotlin Coroutines Test
     testImplementation(libs.kotlinx.coroutines.test)
 
+    //
+    testImplementation (libs.byte.buddy)
+
     // SLF4J Simple para tests
     testImplementation(libs.slf4j.simple)
 

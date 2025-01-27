@@ -3,9 +3,7 @@ package com.luis.dev.meliapp.features.authentication.presentation.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
-import com.luis.dev.meliapp.features.authentication.data.model.UserInformation
 import com.luis.dev.meliapp.features.authentication.data.repository.RegistrationRepositoryResult
-import com.luis.dev.meliapp.features.authentication.data.repository.UserInformationRepository
 import com.luis.dev.meliapp.features.authentication.domain.usecases.RegisterUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,8 +11,7 @@ import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 class RegisterViewModel(
-    private val registerUseCase: RegisterUseCase,
-    private val userInformationRepository: UserInformationRepository
+    private val registerUseCase: RegisterUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(RegisterState())
@@ -24,15 +21,19 @@ class RegisterViewModel(
         when (intent) {
             is RegisterIntent.FullNameChanged -> {
                 _state.value = _state.value.copy(fullName = intent.name)
+                _state.value = _state.value.copy(errorMessage = null)
             }
             is RegisterIntent.EmailChanged -> {
                 _state.value = _state.value.copy(email = intent.email)
+                _state.value = _state.value.copy(errorMessage = null)
             }
             is RegisterIntent.PasswordChanged -> {
                 _state.value = _state.value.copy(password = intent.password)
+                _state.value = _state.value.copy(errorMessage = null)
             }
             is RegisterIntent.ConfirmPasswordChanged -> {
                 _state.value = _state.value.copy(confirmPassword = intent.confirmPassword)
+                _state.value = _state.value.copy(errorMessage = null)
             }
             is RegisterIntent.RegisterClicked -> {
                 register()
@@ -70,19 +71,7 @@ class RegisterViewModel(
             val result = registerUseCase(current.email, current.password)
             when (result) {
                 is RegistrationRepositoryResult.Success -> {
-                    val user: FirebaseUser = result.data
-                    // Subir info de usuario
-                    val userInfo = UserInformation(
-                        uid = user.uid,
-                        name = current.fullName,
-                        email = current.email
-                    )
-                    val success = userInformationRepository.uploadUserInformation(user.uid, userInfo)
-                    if (success) {
-                        _state.value = _state.value.copy(isLoading = false, registeredSuccess = true)
-                    } else {
-                        _state.value = _state.value.copy(isLoading = false, errorMessage = "Error al guardar datos del usuario")
-                    }
+                    _state.value = _state.value.copy(isLoading = false, registeredSuccess = true)
                 }
                 is RegistrationRepositoryResult.Error -> {
                     _state.value = _state.value.copy(isLoading = false, errorMessage = result.message)
@@ -95,7 +84,10 @@ class RegisterViewModel(
     }
 
     private fun isEmailValid(email: String): Boolean {
-        val pattern = Pattern.compile("^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$", Pattern.CASE_INSENSITIVE)
+        val pattern = Pattern.compile(
+            "^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$",
+            Pattern.CASE_INSENSITIVE
+        )
         return pattern.matcher(email).matches()
     }
 }

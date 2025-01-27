@@ -20,6 +20,7 @@ class ResetPasswordViewModel(
         when (intent) {
             is ResetPasswordIntent.EmailChanged -> {
                 _state.value = _state.value.copy(email = intent.email)
+                _state.value = _state.value.copy(errorMessage = null)
             }
             is ResetPasswordIntent.ResetClicked -> {
                 resetPassword()
@@ -56,7 +57,10 @@ class ResetPasswordViewModel(
     }
 
     private fun isEmailValid(email: String): Boolean {
-        val pattern = Pattern.compile("^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$", Pattern.CASE_INSENSITIVE)
+        val pattern = Pattern.compile(
+            "^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$",
+            Pattern.CASE_INSENSITIVE
+        )
         return pattern.matcher(email).matches()
     }
 }

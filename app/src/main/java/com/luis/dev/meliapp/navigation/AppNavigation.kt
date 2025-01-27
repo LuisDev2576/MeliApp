@@ -10,8 +10,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.luis.dev.meliapp.features.details.presentation.DetailsScreen
 import com.luis.dev.meliapp.features.home.presentation.HomeScreen
@@ -26,25 +28,38 @@ import com.luis.dev.meliapp.features.authentication.presentation.register.Regist
 import com.luis.dev.meliapp.features.authentication.presentation.register.RegisterViewModel
 import com.luis.dev.meliapp.features.authentication.presentation.reset.ResetPasswordScreen
 import com.luis.dev.meliapp.features.authentication.presentation.reset.ResetPasswordViewModel
+import kotlinx.serialization.ExperimentalSerializationApi
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSerializationApi::class)
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
 
+    val navBackStackEntry = navController.currentBackStackEntryAsState()
+    val currentDestination: NavDestination? = navBackStackEntry.value?.destination
+    val currentRoute = currentDestination?.route
+
+    val topBarExcludedRoutes = listOf(
+        Route.Login.serializer().descriptor.serialName,
+        Route.Register.serializer().descriptor.serialName,
+        Route.RecoverPassword.serializer().descriptor.serialName
+    )
+
     Scaffold(
         topBar = {
-            val searchBarViewModel: SearchBarViewModel = koinViewModel()
-            val searchBarState = searchBarViewModel.state.collectAsState()
-            SearchTopAppBar(
-                state = searchBarState.value,
-                onIntent = { intent -> searchBarViewModel.handleIntent(intent) },
-                modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
-                navToResultScreen = { productName ->
-                    navController.navigate(Route.Results(productName))
-                }
-            )
+            if (currentRoute !in topBarExcludedRoutes) {
+                val searchBarViewModel: SearchBarViewModel = koinViewModel()
+                val searchBarState = searchBarViewModel.state.collectAsState()
+                SearchTopAppBar(
+                    state = searchBarState.value,
+                    onIntent = { intent -> searchBarViewModel.handleIntent(intent) },
+                    modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
+                    navToResultScreen = { productName ->
+                        navController.navigate(Route.Results(productName))
+                    }
+                )
+            }
         }
     ) { padding ->
         NavHost(

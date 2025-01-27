@@ -1,5 +1,3 @@
-// features/authentication/di/authenticationModule.kt
-
 package com.luis.dev.meliapp.features.authentication.di
 
 import com.google.firebase.auth.FirebaseAuth
@@ -8,8 +6,6 @@ import com.luis.dev.meliapp.features.authentication.data.datasource.AuthDataSour
 import com.luis.dev.meliapp.features.authentication.data.datasource.AuthDataSourceImpl
 import com.luis.dev.meliapp.features.authentication.data.repository.AuthRepository
 import com.luis.dev.meliapp.features.authentication.data.repository.AuthRepositoryImpl
-import com.luis.dev.meliapp.features.authentication.data.repository.UserInformationRepository
-import com.luis.dev.meliapp.features.authentication.data.repository.UserInformationRepositoryImpl
 import com.luis.dev.meliapp.features.authentication.domain.usecases.LoginUseCase
 import com.luis.dev.meliapp.features.authentication.domain.usecases.RegisterUseCase
 import com.luis.dev.meliapp.features.authentication.domain.usecases.ResetPasswordUseCase
@@ -33,14 +29,8 @@ val authenticationModule = module {
         )
     }
 
-    // Repositorios
+    // Repositorio principal de Auth
     single<AuthRepository> { AuthRepositoryImpl(dataSource = get()) }
-    single<UserInformationRepository> {
-        UserInformationRepositoryImpl(
-            context = get(),
-            firestore = get()
-        )
-    }
 
     // UseCases
     factory { LoginUseCase(repository = get()) }
@@ -49,20 +39,12 @@ val authenticationModule = module {
 
     // ViewModels
     viewModel {
-        LoginViewModel(
-            loginUseCase = get(),
-            userInformationRepository = get()
-        )
+        LoginViewModel(loginUseCase = get())
     }
     viewModel {
-        RegisterViewModel(
-            registerUseCase = get(),
-            userInformationRepository = get()
-        )
+        RegisterViewModel(registerUseCase = get())
     }
     viewModel {
-        ResetPasswordViewModel(
-            resetPasswordUseCase = get()
-        )
+        ResetPasswordViewModel(resetPasswordUseCase = get())
     }
 }

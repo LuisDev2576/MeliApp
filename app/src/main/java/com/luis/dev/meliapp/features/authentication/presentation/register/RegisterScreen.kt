@@ -1,21 +1,27 @@
 package com.luis.dev.meliapp.features.authentication.presentation.register
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.luis.dev.meliapp.R
 import com.luis.dev.meliapp.features.authentication.presentation.components.ActionButton
 import com.luis.dev.meliapp.features.authentication.presentation.components.ConfirmPasswordTextField
 import com.luis.dev.meliapp.features.authentication.presentation.components.EmailTextField
+import com.luis.dev.meliapp.features.authentication.presentation.components.Greeting
 import com.luis.dev.meliapp.features.authentication.presentation.components.NameTextField
 import com.luis.dev.meliapp.features.authentication.presentation.components.NavigationTextButton
 import com.luis.dev.meliapp.features.authentication.presentation.components.PasswordTextField
@@ -27,6 +33,8 @@ fun RegisterScreen(
     onNavigateToLogin: () -> Unit,
     onRegistrationSuccess: () -> Unit
 ) {
+    val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
     BackHandler {
         onNavigateToLogin()
     }
@@ -34,75 +42,103 @@ fun RegisterScreen(
     if (state.registeredSuccess) {
         LaunchedEffect(Unit) {
             onRegistrationSuccess()
+            focusManager.clearFocus()
         }
     }
-
+    if(state.errorMessage != null){
+        LaunchedEffect(state.errorMessage) {
+            focusManager.clearFocus()
+            Toast.makeText(context, state.errorMessage, Toast.LENGTH_LONG).show()
+        }
+    }
     Scaffold { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
                 .padding(horizontal = 32.dp),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Crear Cuenta")
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            NameTextField(
-                name = state.fullName,
-                onNameChange = { onIntent(RegisterIntent.FullNameChanged(it)) },
-                isError = state.errorMessage?.contains("nombre") == true
+            Greeting(
+                titleResId = R.string.create_account_title,
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
-
-            EmailTextField(
-                email = state.email,
-                onEmailChange = { onIntent(RegisterIntent.EmailChanged(it)) },
-                isError = state.errorMessage?.contains("Email") == true
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.End
+            ){
+                NameTextField(
+                    name = state.fullName,
+                    onNameChange = { onIntent(RegisterIntent.FullNameChanged(it)) },
+                    isError = state.errorMessage?.contains("nombre") == true
+                )
 
-            PasswordTextField(
-                password = state.password,
-                onPasswordChange = { onIntent(RegisterIntent.PasswordChanged(it)) },
-                isError = state.errorMessage?.contains("contraseña") == true,
-                onDone = {},
-                clearFocusOnDone = false
-            )
+                Spacer(modifier = Modifier.height(10.dp))
 
-            Spacer(modifier = Modifier.height(10.dp))
+                EmailTextField(
+                    email = state.email,
+                    onEmailChange = { onIntent(RegisterIntent.EmailChanged(it)) },
+                    isError = state.errorMessage?.contains("Email") == true
+                )
 
-            ConfirmPasswordTextField(
-                password = state.confirmPassword,
-                onPasswordChange = { onIntent(RegisterIntent.ConfirmPasswordChanged(it)) },
-                isError = state.errorMessage?.contains("Las contraseñas no coinciden") == true,
-                onDone = { onIntent(RegisterIntent.RegisterClicked) }
-            )
+                Spacer(modifier = Modifier.height(10.dp))
 
-            Spacer(modifier = Modifier.height(20.dp))
+                PasswordTextField(
+                    password = state.password,
+                    onPasswordChange = { onIntent(RegisterIntent.PasswordChanged(it)) },
+                    isError = state.errorMessage?.contains("contraseña") == true,
+                    onDone = {},
+                    clearFocusOnDone = false
+                )
 
-            ActionButton(
-                text = "Registrarse",
-                enabled = !state.isLoading,
-                onClick = { onIntent(RegisterIntent.RegisterClicked) }
-            )
+                Spacer(modifier = Modifier.height(10.dp))
 
-            if (!state.errorMessage.isNullOrEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = state.errorMessage,
-                    color = androidx.compose.material.MaterialTheme.colors.error
+                ConfirmPasswordTextField(
+                    password = state.confirmPassword,
+                    onPasswordChange = { onIntent(RegisterIntent.ConfirmPasswordChanged(it)) },
+                    isError = state.errorMessage?.contains("Las contraseñas no coinciden") == true,
+                    onDone = { onIntent(RegisterIntent.RegisterClicked) }
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
 
-            NavigationTextButton(
-                primaryTextId = R.string.already_have_account,
-                secondaryTextId = R.string.login_button,
-                onClick = { onNavigateToLogin() }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                ActionButton(
+                    text = "Registrarse",
+                    enabled = !state.isLoading,
+                    onClick = { onIntent(RegisterIntent.RegisterClicked) }
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                NavigationTextButton(
+                    primaryTextId = R.string.already_have_account,
+                    secondaryTextId = R.string.login_button,
+                    onClick = { onNavigateToLogin() }
+                )
+            }
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(3f)
             )
         }
     }
