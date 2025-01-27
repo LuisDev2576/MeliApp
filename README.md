@@ -287,7 +287,7 @@ meliapp/
     <tr>
       <td><strong>Arquitectura</strong></td>
       <td>
-        MVI (propio), 
+        MVI, 
         <a href="https://insert-koin.io" target="_blank">Koin</a> (inyección de dependencias)
       </td>
     </tr>
@@ -404,7 +404,7 @@ com/
 <ol>
   <li>
     <strong>Clonar el repositorio</strong>:
-    <pre><code>git clone https://github.com/tu_usuario/meliapp.git
+    <pre><code>git clone https://github.com/LuisDev2576/meliapp.git
 cd meliapp</code></pre>
   </li>
   <li>
