@@ -64,7 +64,7 @@ fun AppNavigation() {
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = Route.Login,
+            startDestination = Route.Home,
             modifier = Modifier
                 .padding(padding)
         ) {
@@ -106,10 +106,11 @@ fun AppNavigation() {
             }
 
             composable<Route.Home> {
-                HomeScreen()
-                BackHandler {
+                HomeScreen(
+                    onBack = {
 
-                }
+                    }
+                )
             }
             composable<Route.Results> {
                 val resultsViewModel: ResultsViewModel = koinViewModel()
