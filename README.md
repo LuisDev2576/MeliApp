@@ -312,7 +312,7 @@ meliapp/
     </tr>
     <tr>
       <td><strong>Firebase</strong></td>
-      <td>Auth, Firestore, Storage, Crashlytics, VertexAI, BOM</td>
+      <td>Auth, Crashlytics, BOM</td>
     </tr>
     <tr>
       <td><strong>Testing</strong></td>
