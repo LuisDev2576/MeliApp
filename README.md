@@ -3,8 +3,8 @@
 <h1 align="center"><strong>MeliApp</strong></h1>
 
 <div align="center">
-  <img src="https://i.postimg.cc/QtxfB89P/769shots-so.png" alt="Banner de MeliApp" />
-  <img src="https://i.postimg.cc/s2nN4Gry/42shots-so.png" alt="Banner de MeliApp" />
+  <img src="https://github.com/user-attachments/assets/307c332b-4373-4804-9c2d-56fea67f214b" />
+  <img src="https://github.com/user-attachments/assets/4d9f2fdd-68b8-4bd1-9191-13b98ffc89be" />
 </div>
 
 <br/>
