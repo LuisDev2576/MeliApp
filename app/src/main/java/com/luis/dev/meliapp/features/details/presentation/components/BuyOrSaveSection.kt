@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun BuyOrSaveSection(
     onBuyButtonClick: () -> Unit,
-    onSaveButtonClick: () -> Unit,
+    onSaveButtonClick: () -> Unit
 ) {
     Button(
         onClick = onBuyButtonClick,
@@ -52,7 +52,6 @@ fun BuyOrSaveSection(
 @Preview(showBackground = true, device = Devices.PIXEL_4_XL)
 @Composable
 fun BuyOrSaveSectionPreview() {
-
     Column(
         modifier = Modifier.background(Color.White)
     ) {

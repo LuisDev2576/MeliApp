@@ -76,7 +76,7 @@ fun AppNavigation() {
                     onIntent = { loginViewModel.handleIntent(it) },
                     onNavigateToRegister = { navController.navigate(Route.Register) },
                     onNavigateToReset = { navController.navigate(Route.RecoverPassword) },
-                    onNavigateBack = {  },
+                    onNavigateBack = { },
                     onLoginSuccess = { navController.navigate(Route.Home) }
                 )
             }
@@ -107,7 +107,6 @@ fun AppNavigation() {
             composable<Route.Home> {
                 HomeScreen(
                     onBack = {
-
                     }
                 )
             }
@@ -128,7 +127,7 @@ fun AppNavigation() {
                 val detailsViewModel: DetailsViewModel = koinViewModel()
                 val detailsState = detailsViewModel.state.collectAsState().value
                 DetailsScreen(
-                    detailsState = detailsState,
+                    detailsState = detailsState
                 )
             }
         }

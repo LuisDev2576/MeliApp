@@ -11,7 +11,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.luis.dev.meliapp.ui.theme.PigmentGreen
 
-
 /**
  * Muestra la información de envío del producto, indicando si es gratis.
  *

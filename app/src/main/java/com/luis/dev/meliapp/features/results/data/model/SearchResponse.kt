@@ -84,7 +84,7 @@ data class SearchResultItem(
 
 @Serializable
 data class Shipping(
-    @SerialName("free_shipping") val freeShipping: Boolean,
+    @SerialName("free_shipping") val freeShipping: Boolean
 )
 
 /**

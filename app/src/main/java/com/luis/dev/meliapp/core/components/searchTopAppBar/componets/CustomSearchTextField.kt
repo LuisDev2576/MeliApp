@@ -55,7 +55,7 @@ fun CustomSearchTextField(
             .clip(shape = CircleShape)
             .background(
                 MaterialTheme.colorScheme.surface,
-                MaterialTheme.shapes.small,
+                MaterialTheme.shapes.small
             )
             .fillMaxWidth()
             .focusRequester(focusRequester),
@@ -103,5 +103,3 @@ fun CustomSearchTextField(
         }
     )
 }
-
-

@@ -22,7 +22,7 @@ import com.luis.dev.meliapp.R
  */
 @Composable
 fun AdvertisementBanner(
-    imageUrl: String,
+    imageUrl: String
 ) {
     AsyncImage(
         model = imageUrl,

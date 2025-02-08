@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.luis.dev.meliapp.core.utils.toFormattedPrice
+import com.luis.dev.meliapp.core.utils.ToFormattedPrice
 import com.luis.dev.meliapp.ui.theme.PigmentGreen
 
 /**
@@ -31,7 +31,7 @@ fun InstallmentsSection(numeroDeCuotas: Int, amount: Double) {
                 fontSize = 18.sp
             )
             Text(
-                text = " $numeroDeCuotas cuotas de $ ${amount.toInt().toFormattedPrice()} sin interés",
+                text = " $numeroDeCuotas cuotas de $ ${amount.toInt().ToFormattedPrice()} sin interés",
                 style = MaterialTheme.typography.bodySmall,
                 color = PigmentGreen,
                 fontWeight = FontWeight.Normal,
@@ -50,7 +50,7 @@ fun InstallmentsSection(numeroDeCuotas: Int, amount: Double) {
             fontSize = 14.sp,
             modifier = Modifier
                 .padding(vertical = 8.dp)
-                .clickable{ }
+                .clickable { }
         )
     }
 }

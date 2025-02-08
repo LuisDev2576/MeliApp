@@ -17,8 +17,8 @@ class DetailsViewModel(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val productId: String = savedStateHandle["productId"] ?:
-    throw IllegalArgumentException("Se requiero un producto para realizar la busqueda")
+    private val productId: String = savedStateHandle["productId"]
+        ?: throw IllegalArgumentException("Se requiero un producto para realizar la busqueda")
 
     private val _state = MutableStateFlow(DetailsState())
     val state: StateFlow<DetailsState> get() = _state

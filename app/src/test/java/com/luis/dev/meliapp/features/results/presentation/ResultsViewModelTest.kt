@@ -1,8 +1,8 @@
 package com.luis.dev.meliapp.features.results.presentation
 
+import SearchResultItem
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import SearchResultItem
 import com.luis.dev.meliapp.features.results.domain.usecases.GetResultsUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -12,9 +12,15 @@ import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 

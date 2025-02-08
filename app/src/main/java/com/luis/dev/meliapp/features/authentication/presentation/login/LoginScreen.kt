@@ -21,9 +21,9 @@ import com.luis.dev.meliapp.R
 import com.luis.dev.meliapp.features.authentication.presentation.components.CustomActionButton
 import com.luis.dev.meliapp.features.authentication.presentation.components.EmailInputField
 import com.luis.dev.meliapp.features.authentication.presentation.components.GreetingMessage
-import com.luis.dev.meliapp.features.authentication.presentation.components.ResetPasswordNavigationButton
 import com.luis.dev.meliapp.features.authentication.presentation.components.NavigationLinkText
 import com.luis.dev.meliapp.features.authentication.presentation.components.PasswordTextField
+import com.luis.dev.meliapp.features.authentication.presentation.components.ResetPasswordNavigationButton
 
 /**
  * Pantalla de inicio de sesión que permite a los usuarios ingresar su correo electrónico y contraseña,
@@ -58,7 +58,7 @@ fun LoginScreen(
         }
     }
 
-    if(loginState.errorMessage != null){
+    if (loginState.errorMessage != null) {
         LaunchedEffect(loginState.errorMessage) {
             focusManager.clearFocus()
             Toast.makeText(context, loginState.errorMessage, Toast.LENGTH_LONG).show()
@@ -79,10 +79,11 @@ fun LoginScreen(
                 instructionsResId = R.string.login_prompt
             )
 
-
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
 
             Column(
                 horizontalAlignment = Alignment.End
@@ -108,14 +109,16 @@ fun LoginScreen(
                 )
             }
 
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
-            ){
+            ) {
                 CustomActionButton(
                     label = "Iniciar Sesión",
                     isEnabled = !loginState.isLoading,
@@ -130,11 +133,11 @@ fun LoginScreen(
                     onClick = { onNavigateToRegister() }
                 )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .weight(3f))
-
-
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(3f)
+            )
         }
     }
 }

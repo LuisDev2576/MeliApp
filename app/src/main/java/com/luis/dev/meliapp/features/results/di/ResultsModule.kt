@@ -14,7 +14,7 @@ import org.koin.dsl.module
  * Módulo de Koin para la configuración de dependencias relacionadas con los resultados de búsqueda.
  * Proporciona instancias del DataSource, Repositorio, Caso de Uso y ViewModel.
  */
-val resultsModule = module {
+val ResultsModule = module {
 
     /**
      * Proporciona una implementación de [ResultsDataSource] para interactuar con la API y obtener resultados de búsqueda.

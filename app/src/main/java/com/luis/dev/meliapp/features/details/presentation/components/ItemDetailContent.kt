@@ -22,7 +22,6 @@ import com.luis.dev.meliapp.features.details.data.model.ItemDetailResponse
  */
 @Composable
 fun ItemDetailContent(itemDetail: ItemDetailResponse) {
-
     val cantidadVendidos by rememberSaveable { mutableIntStateOf((2..1000).random()) }
     val cantidadDeResenas by rememberSaveable { mutableIntStateOf((1..cantidadVendidos).random()) }
     val calificacion by rememberSaveable { mutableIntStateOf((1..5).random()) }
@@ -56,7 +55,7 @@ fun ItemDetailContent(itemDetail: ItemDetailResponse) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         InstallmentsSection(numeroDeCuotas = randonNumberQuantity, amount = amount)
-        if(itemDetail.hasFreeShipping){
+        if (itemDetail.hasFreeShipping) {
             Spacer(modifier = Modifier.height(16.dp))
             ShippingInfoSection(stock = stock)
         }

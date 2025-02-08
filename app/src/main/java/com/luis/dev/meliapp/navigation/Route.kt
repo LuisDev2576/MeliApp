@@ -21,5 +21,4 @@ sealed class Route {
 
     @Serializable
     data class Results(val productName: String) : Route()
-
 }

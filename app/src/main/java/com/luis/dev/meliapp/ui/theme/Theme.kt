@@ -16,7 +16,7 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = DelftBlue,
     onTertiary = White,
     background = White,
-    onBackground = Black,
+    onBackground = Black
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -27,7 +27,7 @@ private val LightColorScheme = lightColorScheme(
     tertiary = DelftBlue,
     onTertiary = White,
     background = White,
-    onBackground = Black,
+    onBackground = Black
 )
 
 @Composable

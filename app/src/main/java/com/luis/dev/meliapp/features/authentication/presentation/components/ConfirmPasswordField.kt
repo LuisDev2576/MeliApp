@@ -45,7 +45,7 @@ fun ConfirmPasswordField(
     confirmPassword: String,
     onConfirmPasswordChange: (String) -> Unit,
     hasError: Boolean,
-    onDone: () -> Unit,
+    onDone: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     var isPasswordVisible by remember { mutableStateOf(false) }
@@ -111,9 +111,8 @@ fun ConfirmPasswordField(
                 focusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
                 unfocusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
                 disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
-                errorTrailingIconColor = MaterialTheme.colorScheme.onSurface,
+                errorTrailingIconColor = MaterialTheme.colorScheme.onSurface
             )
         )
     }
 }
-
