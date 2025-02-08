@@ -1,0 +1,24 @@
+name: Push Build
+
+on:
+    push: {}
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout del código
+              uses: actions/checkout@v3
+
+            - name: Configurar JDK 17
+              uses: actions/setup-java@v3
+              with:
+                  distribution: 'temurin'
+                  java-version: '17'
+
+            - name: Dar permisos de ejecución al Gradle Wrapper
+              run: chmod +x ./gradlew
+
+            - name: Ejecutar Ktlint y compilar la app (Debug)
+              run: ./gradlew ktlintCheck assembleDebug
