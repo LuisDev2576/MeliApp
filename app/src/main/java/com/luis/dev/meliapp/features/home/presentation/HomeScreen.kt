@@ -18,7 +18,7 @@ import com.luis.dev.meliapp.features.home.presentation.components.CategoriesSect
 @Composable
 fun HomeScreen(
     onBack: () -> Unit
-){
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -29,8 +29,8 @@ fun HomeScreen(
                 "https://i.postimg.cc/43q3g7m8/Captura-de-pantalla-de-2025-01-27-02-17-11.png",
                 "https://i.postimg.cc/h4H3dS7H/Captura-de-pantalla-de-2025-01-27-02-16-59.png",
                 "https://i.postimg.cc/GpWsjSJh/Captura-de-pantalla-de-2025-01-27-02-16-42.png",
-                "https://i.postimg.cc/kgV4hv5V/Captura-de-pantalla-de-2025-01-27-02-16-16.png",
-             )
+                "https://i.postimg.cc/kgV4hv5V/Captura-de-pantalla-de-2025-01-27-02-16-16.png"
+            )
         )
         CategoriesSection(
             itemList = listOf(
@@ -42,7 +42,7 @@ fun HomeScreen(
                 Pair("Accesorios para vehiculos", "https://http2.mlstatic.com/storage/categories-api/images/6fc20d84-2ce6-44ee-8e7e-e5479a78eab0.png"),
                 Pair("Celulares", "https://http2.mlstatic.com/storage/categories-api/images/fdca1620-3b63-4af2-bc0b-aeed17048d5d.png"),
                 Pair("Computación", "https://http2.mlstatic.com/storage/categories-api/images/f96f9ecc-dfe6-4cf9-a270-4c0cee23f868.png"),
-                Pair("Hogar", "https://http2.mlstatic.com/storage/categories-api/images/5194ee98-9095-4ef6-b9a5-c78073fa60af.png"),
+                Pair("Hogar", "https://http2.mlstatic.com/storage/categories-api/images/5194ee98-9095-4ef6-b9a5-c78073fa60af.png")
             )
         )
         AdvertisementBanner(
@@ -54,6 +54,3 @@ fun HomeScreen(
         onBack()
     }
 }
-
-
-

@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-
 /**
  * Componente principal que representa un ítem de resultado de búsqueda.
  *
@@ -32,7 +31,7 @@ fun ResultItem(item: SearchResultItem, onClick: () -> Unit) {
                 .background(Color.White)
                 .fillMaxWidth()
                 .clickable {
-                   onClick()
+                    onClick()
                 }
                 .padding(8.dp)
         ) {
@@ -76,7 +75,6 @@ fun ResultItemPreview() {
             Attribute(id = "WEIGHT", name = "Peso", valueName = "170 g")
         )
     )
-    ResultItem(item = item){
-
+    ResultItem(item = item) {
     }
 }

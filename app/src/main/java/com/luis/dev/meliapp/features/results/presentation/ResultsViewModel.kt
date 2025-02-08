@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
  */
 class ResultsViewModel(
     private val getResultsUseCase: GetResultsUseCase,
-    savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     /**

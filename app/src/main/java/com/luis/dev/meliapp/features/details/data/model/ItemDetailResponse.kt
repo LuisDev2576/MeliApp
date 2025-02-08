@@ -44,7 +44,7 @@ data class ItemDetailResponse(
 data class Picture(
     val id: String,
     val url: String,
-    @SerialName("secure_url") val secureUrl: String? = null,
+    @SerialName("secure_url") val secureUrl: String? = null
 )
 
 /**
@@ -62,5 +62,5 @@ data class Attribute(
  */
 @Serializable
 data class Shipping(
-    @SerialName("free_shipping") val freeShipping: Boolean? = null,
+    @SerialName("free_shipping") val freeShipping: Boolean? = null
 )

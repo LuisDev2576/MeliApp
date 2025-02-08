@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.luis.dev.meliapp.core.utils.toFormattedPrice
+import com.luis.dev.meliapp.core.utils.ToFormattedPrice
 import com.luis.dev.meliapp.ui.theme.PigmentGreen
 import kotlin.math.roundToInt
 
@@ -30,7 +30,7 @@ fun PriceSection(
     Column(verticalArrangement = Arrangement.Center) {
         if (discountPercentage != null && originalPrice != null) {
             Text(
-                text = "$ ${originalPrice.toInt().toFormattedPrice()}",
+                text = "$ ${originalPrice.toInt().ToFormattedPrice()}",
                 textDecoration = TextDecoration.LineThrough,
                 color = Color.Gray,
                 fontSize = 16.sp
@@ -38,8 +38,8 @@ fun PriceSection(
             Spacer(modifier = Modifier.height(2.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "$ ${price.toInt().toFormattedPrice()}",
-                    fontSize = 30.sp,
+                    text = "$ ${price.toInt().ToFormattedPrice()}",
+                    fontSize = 30.sp
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
@@ -50,8 +50,8 @@ fun PriceSection(
             }
         } else {
             Text(
-                text = "$ ${price.toInt().toFormattedPrice()}",
-                fontSize = 30.sp,
+                text = "$ ${price.toInt().ToFormattedPrice()}",
+                fontSize = 30.sp
             )
         }
     }

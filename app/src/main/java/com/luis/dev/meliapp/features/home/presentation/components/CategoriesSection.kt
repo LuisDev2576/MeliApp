@@ -67,7 +67,7 @@ fun CategoriesSection(
             Icon(
                 imageVector = Icons.Outlined.LocalShipping,
                 contentDescription = "Envío gratis",
-                tint = PigmentGreen,
+                tint = PigmentGreen
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
@@ -78,7 +78,7 @@ fun CategoriesSection(
             )
             Text(
                 " en millones de productos desde $60.000.",
-                fontSize = 12.sp,
+                fontSize = 12.sp
             )
         }
     }
@@ -86,7 +86,7 @@ fun CategoriesSection(
         rows = GridCells.Fixed(1),
         contentPadding = PaddingValues(horizontal = 16.dp),
         modifier = Modifier
-            .height(100.dp),
+            .height(100.dp)
     ) {
         items(itemList) {
             CategoryItem(

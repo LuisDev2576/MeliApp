@@ -19,7 +19,7 @@ import org.koin.dsl.module
  * Módulo de Koin para la configuración de las dependencias relacionadas con la autenticación.
  * Proporciona instancias de Firebase, DataSource, Repositorios, Casos de Uso y ViewModels.
  */
-val authenticationModule = module {
+val AuthenticationModule = module {
 
     // Instancias de Firebase
     /**

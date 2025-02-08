@@ -20,7 +20,7 @@ import kotlinx.coroutines.tasks.await
  */
 class AuthenticationDataSourceImpl(
     private val context: Context,
-    private val firebaseAuth: FirebaseAuth,
+    private val firebaseAuth: FirebaseAuth
 ) : AuthenticationDataSource {
 
     /**

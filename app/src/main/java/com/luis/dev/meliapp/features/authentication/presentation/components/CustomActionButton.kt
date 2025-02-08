@@ -40,7 +40,7 @@ fun CustomActionButton(
             .height(50.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Blue,
-            disabledContainerColor = Color.Blue.copy(alpha = 0.3f),
+            disabledContainerColor = Color.Blue.copy(alpha = 0.3f)
         ),
         shape = RoundedCornerShape(10)
     ) {
@@ -52,12 +52,11 @@ fun CustomActionButton(
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun ActionButtonPreviewEnabled() {
     MeliAppTheme {
-        Box(modifier = Modifier.background(Color.White)){
+        Box(modifier = Modifier.background(Color.White)) {
             CustomActionButton(label = "Click Me", onAction = { /* Handle click */ })
         }
     }
@@ -67,7 +66,7 @@ fun ActionButtonPreviewEnabled() {
 @Composable
 fun ActionButtonPreviewDisabled() {
     MeliAppTheme {
-        Box(modifier = Modifier.background(Color.White)){
+        Box(modifier = Modifier.background(Color.White)) {
             CustomActionButton(label = "Loading", isEnabled = false, onAction = { /* Handle click */ })
         }
     }

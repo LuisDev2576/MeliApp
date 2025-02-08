@@ -16,7 +16,7 @@ import com.luis.dev.meliapp.ui.theme.MeliAppTheme
  */
 @Composable
 fun DetailsScreen(
-    detailsState: DetailsState,
+    detailsState: DetailsState
 ) {
     when {
         detailsState.isLoading -> {

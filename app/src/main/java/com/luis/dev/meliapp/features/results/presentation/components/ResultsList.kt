@@ -41,7 +41,7 @@ fun ResultsList(results: List<SearchResultItem>, onProductClick: (String) -> Uni
     ) {
         Log.d("ResultsList", "results: $results")
         items(results) { item ->
-            ResultItem(item = item){
+            ResultItem(item = item) {
                 onProductClick(item.id)
                 Log.d("ItemPrice", "ItemId ${item.id} / ItemPrice ${item.price} / ItemOriginalPrice ${item.originalPrice}")
             }
@@ -57,7 +57,8 @@ fun ResultsListPreview() {
         title = "Apple Macbook Air (13 Pulgadas, 2020, Chip M1, 256 Gb De Ssd, 8 Gb De Ram) - Oro",
         price = 1399999.0,
         thumbnail = "http://http2.mlstatic.com/D_604544-MLU75179296686_032024-I.jpg",
-        permalink = "https://www.mercadolibre.com.ar/apple-macbook-air-13-pulgadas-2020-chip-m1-256-gb-de-ssd-8-gb-de-ram-oro/p/MLA17828522#wid=MLA1449414435&sid=unknown",
+        permalink = "https://www.mercadolibre.com.ar/apple-macbook-air-13-pulgadas-2020-chip-m1-256-gb-de-ssd-8-gb-de-ram-oro/" +
+            "p/MLA17828522#wid=MLA1449414435&sid=unknown",
         officialStoreName = null,
         originalPrice = null,
         shipping = Shipping(
@@ -147,7 +148,8 @@ fun ResultsListPreview() {
         title = "Apple Pencil Blanco 1ra Generación. Lápiz Optico Con Adaptador Usb-c Y Adaptador De Lightning.",
         price = 199200.0,
         thumbnail = "http://http2.mlstatic.com/D_755523-MLU74859489643_032024-I.jpg",
-        permalink = "https://www.mercadolibre.com.ar/apple-pencil-blanco-1ra-generacion-lapiz-optico-con-adaptador-usb-c-y-adaptador-de-lightning/p/MLA27918950#wid=MLA1465505497&sid=unknown",
+        permalink = "https://www.mercadolibre.com.ar/apple-pencil-blanco-1ra-generacion-lapiz-optico-con-adaptador-usb-c-y-adaptador-de-lightning/p/" +
+            "MLA27918950#wid=MLA1465505497&sid=unknown",
         officialStoreName = null,
         originalPrice = 240000.0,
         shipping = Shipping(
@@ -178,7 +180,8 @@ fun ResultsListPreview() {
         title = "Pencil Carrello Id766 Para iPad Apple Optico Capacitivo Color Blanco",
         price = 39999.2,
         thumbnail = "http://http2.mlstatic.com/D_726940-MLU75926838708_042024-I.jpg",
-        permalink = "https://www.mercadolibre.com.ar/pencil-carrello-id766-para-ipad-apple-optico-capacitivo-color-blanco/p/MLA36338291#wid=MLA1430096665&sid=unknown",
+        permalink = "https://www.mercadolibre.com.ar/pencil-carrello-id766-para-ipad-apple-optico-capacitivo-color-blanco/p/" +
+            "MLA36338291#wid=MLA1430096665&sid=unknown",
         officialStoreName = "Carrello",
         originalPrice = 49999.0,
         shipping = Shipping(
@@ -244,8 +247,7 @@ fun ResultsListPreview() {
     )
 
     MeliAppTheme {
-        ResultsList(results = results){
-
+        ResultsList(results = results) {
         }
     }
 }

@@ -2,10 +2,16 @@ package com.luis.dev.meliapp.features.home.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -15,8 +21,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.google.accompanist.pager.*
-import com.luis.dev.meliapp.R
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
+import com.luis.dev.meliapp.R.drawable.no_image_available
 import kotlinx.coroutines.launch
 
 /**
@@ -30,7 +38,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AdvertisementCarousel(
     imageList: List<String>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(
         initialPage = Int.MAX_VALUE / 2
@@ -82,7 +90,7 @@ fun AdvertisementCarousel(
 private fun CarouselItem(imageUrl: String) {
     AsyncImage(
         model = imageUrl,
-        placeholder = painterResource(R.drawable.no_image_available),
+        placeholder = painterResource(no_image_available),
         contentDescription = imageUrl,
         contentScale = ContentScale.Crop,
         modifier = Modifier

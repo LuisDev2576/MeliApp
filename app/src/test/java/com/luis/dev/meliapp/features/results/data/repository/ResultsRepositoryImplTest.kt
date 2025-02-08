@@ -1,9 +1,9 @@
 package com.luis.dev.meliapp.features.results.data.repository
 
-import android.util.Log
+import Paging
 import SearchResponse
 import SearchResultItem
-import Paging
+import android.util.Log
 import com.luis.dev.meliapp.features.results.data.datasource.ResultsDataSource
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -12,9 +12,12 @@ import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 

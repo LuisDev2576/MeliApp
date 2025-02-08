@@ -2,10 +2,17 @@ package com.luis.dev.meliapp.features.authentication.data.repository
 
 import com.google.firebase.auth.FirebaseUser
 import com.luis.dev.meliapp.features.authentication.data.datasource.AuthenticationDataSource
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.runs
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 

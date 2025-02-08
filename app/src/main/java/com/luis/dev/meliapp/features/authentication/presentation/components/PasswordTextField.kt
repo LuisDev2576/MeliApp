@@ -118,7 +118,7 @@ fun PasswordTextField(
                 focusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
                 unfocusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
                 disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
-                errorTrailingIconColor = MaterialTheme.colorScheme.onSurface,
+                errorTrailingIconColor = MaterialTheme.colorScheme.onSurface
             )
         )
     }

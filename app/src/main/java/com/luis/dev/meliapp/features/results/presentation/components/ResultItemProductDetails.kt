@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-
 /**
  * Muestra los detalles del producto, incluyendo título, precios, cuotas y envío.
  *

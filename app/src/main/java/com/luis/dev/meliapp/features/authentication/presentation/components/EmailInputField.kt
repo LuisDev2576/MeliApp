@@ -83,7 +83,7 @@ fun EmailInputField(
                 focusedPlaceholderColor = MaterialTheme.colorScheme.onSurface,
                 unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurface,
                 disabledPlaceholderColor = MaterialTheme.colorScheme.onSurface,
-                errorPlaceholderColor = MaterialTheme.colorScheme.error,
+                errorPlaceholderColor = MaterialTheme.colorScheme.error
             )
         )
     }

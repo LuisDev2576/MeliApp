@@ -3,9 +3,9 @@ package com.luis.dev.meliapp.features.details.presentation
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.luis.dev.meliapp.features.details.data.model.Attribute
-import com.luis.dev.meliapp.features.details.domain.usecases.GetItemDetailUseCase
 import com.luis.dev.meliapp.features.details.data.model.ItemDetailResponse
 import com.luis.dev.meliapp.features.details.data.model.Picture
+import com.luis.dev.meliapp.features.details.domain.usecases.GetItemDetailUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -19,7 +19,9 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 

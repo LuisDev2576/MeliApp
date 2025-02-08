@@ -1,3 +1,5 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -46,8 +49,17 @@ android {
     }
 }
 
-dependencies {
+ktlint {
+    version.set("0.47.1")
+    ignoreFailures.set(false)
+    reporters {
+        reporter(ReporterType.PLAIN)
+        reporter(ReporterType.CHECKSTYLE)
+        reporter(ReporterType.SARIF)
+    }
+}
 
+dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -63,56 +75,28 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation (libs.accompanist.systemuicontroller)
-
-    // Navigation
+    implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.navigation.compose)
-
-    // Koin
     implementation(libs.koin.androidx.compose)
-
-    // Ktor
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.okhttp)
-    implementation (libs.ktor.serialization.kotlinx.json)
-    implementation (libs.ktor.client.content.negotiation)
-
-    // Coil
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.content.negotiation)
     implementation(libs.coil.compose)
-
-    // Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
-
-    // MockK
     testImplementation(libs.mockk)
-
-    // Kotlin Coroutines Test
     testImplementation(libs.kotlinx.coroutines.test)
-
-    //
-    testImplementation (libs.byte.buddy)
-
-    // SLF4J Simple para tests
+    testImplementation(libs.byte.buddy)
     testImplementation(libs.slf4j.simple)
-
-    // Pager
-    implementation (libs.accompanist.pager)
-    implementation (libs.accompanist.pager.indicators)
-
-    // Vertex AI by Firebase
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
     implementation(libs.firebase.vertexai)
-
-    // Firebase BOM (Bill of Materials)
     implementation(platform(libs.firebase.bom))
-
-    // Firebase dependencies
-    implementation (libs.firebase.auth.ktx)
-    implementation (libs.firebase.firestore.ktx)
-    implementation (libs.firebase.storage.ktx)
-    implementation (libs.firebase.crashlytics.ktx)
-
-    // Material Extended Icons
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.crashlytics.ktx)
     implementation(libs.androidx.material.icons.extended)
 }

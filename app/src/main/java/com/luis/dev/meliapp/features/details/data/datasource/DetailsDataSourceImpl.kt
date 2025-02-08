@@ -4,7 +4,6 @@ import com.luis.dev.meliapp.features.details.data.model.ItemDetailResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import kotlinx.serialization.json.Json
 
 /**
  * Implementación de [DetailsDataSource] que hace la llamada a la API de Mercado Libre.

@@ -8,9 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import com.luis.dev.meliapp.core.utils.toFormattedPrice
+import com.luis.dev.meliapp.core.utils.ToFormattedPrice
 import com.luis.dev.meliapp.ui.theme.PigmentGreen
-
 
 /**
  * Muestra la información de las cuotas disponibles para el producto.
@@ -29,7 +28,7 @@ fun ResultItemInstallmentsSection(installments: Installments?) {
                     fontWeight = FontWeight.Normal
                 )
                 Text(
-                    text = " ${it.quantity} cuotas de $ ${it.amount.toInt().toFormattedPrice()}${if (it.noInterest) " sin interés" else ""}",
+                    text = " ${it.quantity} cuotas de $ ${it.amount.toInt().ToFormattedPrice()}${if (it.noInterest) " sin interés" else ""}",
                     style = MaterialTheme.typography.bodySmall,
                     color = PigmentGreen,
                     fontWeight = FontWeight.SemiBold,

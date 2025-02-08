@@ -8,13 +8,13 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import org.koin.dsl.module
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
 /**
  * Módulo de dependencias globales utilizado para inyección de dependencias con Koin.
  */
-val globalModule = module {
+val GlobalModule = module {
 
     /**
      * Proveedor de configuración de Kotlinx Serialization para deserializar JSON.
