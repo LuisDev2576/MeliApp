@@ -6,5 +6,5 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.3.1" apply false
+    alias(libs.plugins.ktlint) apply false
 }
