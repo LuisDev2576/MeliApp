@@ -439,7 +439,7 @@ cd meliapp</code></pre>
   Puedes descargar la aplicación mediante el archivo APK proporcionado.
 </p>
 <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
-  <a href="https://drive.google.com/drive/folders/1jKX31qN4YJzKY9UZG7U4ojTDEl8RbZW0?usp=sharing" target="_blank">
+  <a href="https://github.com/LuisDev2576/MeliApp/releases/tag/latest" target="_blank">
     <img src="https://github.com/user-attachments/assets/6246d1a5-2a8a-44d4-8eda-1c98d8f2c035" alt="Descargar APK" width="200px"/>
   </a>
 </div>
