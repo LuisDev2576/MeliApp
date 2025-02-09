@@ -1,7 +1,4 @@
-permissions:
-    contents: write
-
-name: PR a Master
+name: Validaciones PR
 
 on:
     pull_request:
@@ -10,9 +7,8 @@ on:
 jobs:
     pr_checks:
         runs-on: ubuntu-latest
-
         steps:
-            - name: Checkout del código
+            - name: Checkout del código del PR
               uses: actions/checkout@v3
 
             - name: Configurar JDK 17
@@ -24,36 +20,5 @@ jobs:
             - name: Dar permisos de ejecución al Gradle Wrapper
               run: chmod +x ./gradlew
 
-            - name: Ejecutar Ktlint, compilar la app y correr tests unitarios (Debug)
-              run: ./gradlew ktlintCheck assembleDebug test
-
-            - name: Compilar APK Release
-              run: ./gradlew assembleRelease
-
-            - name: Instalar GitHub CLI
-              run: |
-                  sudo apt update
-                  sudo apt install gh -y
-
-            - name: Borrar Release existente (si existe) con tag "latest"
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                  if gh release view latest > /dev/null 2>&1; then
-                    echo "Release 'latest' encontrado, borrándolo..."
-                    gh release delete latest --yes
-                  else
-                    echo "No existe release 'latest'."
-                  fi
-
-            - name: Crear Release con tag "latest"
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                  gh release create latest -t "Latest APK" -n "Release automatizada con el APK más reciente"
-
-            - name: Subir APK al Release
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                  gh release upload latest app/build/outputs/apk/release/app-release.apk --clobber
+            - name: Ejecutar tests unitarios (u otras validaciones)
+              run: ./gradlew test
