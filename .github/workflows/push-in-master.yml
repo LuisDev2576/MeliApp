@@ -1,0 +1,55 @@
+name: Build y Despliegue en Master
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    build_release:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout del código de master
+              uses: actions/checkout@v3
+
+            - name: Configurar JDK 17
+              uses: actions/setup-java@v3
+              with:
+                  distribution: 'temurin'
+                  java-version: '17'
+
+            - name: Dar permisos de ejecución al Gradle Wrapper
+              run: chmod +x ./gradlew
+
+            - name: Ejecutar Ktlint, compilar la app (Debug y Release) y tests unitarios
+              run: |
+                  ./gradlew ktlintCheck assembleDebug test assembleRelease
+
+            - name: Instalar GitHub CLI
+              run: |
+                  sudo apt update
+                  sudo apt install gh -y
+
+            - name: Borrar Release existente (si existe) con tag "latest"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  if gh release view latest > /dev/null 2>&1; then
+                    echo "Release 'latest' encontrado, borrándolo..."
+                    gh release delete latest --yes
+                  else
+                    echo "No existe release 'latest'."
+                  fi
+
+            - name: Crear Release con tag "latest"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  gh release create latest -t "Latest APK" -n "Release automatizada con el APK más reciente"
+
+            - name: Subir APK al Release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  gh release upload latest app/build/outputs/apk/release/app-release.apk --clobber
