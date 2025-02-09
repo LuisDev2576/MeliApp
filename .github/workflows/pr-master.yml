@@ -27,10 +27,8 @@ jobs:
             - name: Compilar APK Release
               run: ./gradlew assembleRelease
 
-            - name: Configurar GitHub CLI
-              uses: cli/gh-actions@v2
-              with:
-                  version: 'latest'
+            - name: Instalar GitHub CLI
+              uses: crazy-max/ghaction-gh-cli@v1
 
             - name: Borrar Release existente (si existe) con tag "latest"
               env:
