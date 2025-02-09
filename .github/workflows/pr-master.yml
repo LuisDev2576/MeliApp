@@ -28,7 +28,9 @@ jobs:
               run: ./gradlew assembleRelease
 
             - name: Instalar GitHub CLI
-              uses: crazy-max/ghaction-gh-cli@v1
+              run: |
+                  sudo apt update
+                  sudo apt install gh -y
 
             - name: Borrar Release existente (si existe) con tag "latest"
               env:
