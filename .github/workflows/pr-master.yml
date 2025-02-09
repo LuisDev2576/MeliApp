@@ -27,8 +27,30 @@ jobs:
             - name: Compilar APK Release
               run: ./gradlew assembleRelease
 
-            - name: Subir APK como artifact
-              uses: actions/upload-artifact@v4
+            - name: Configurar GitHub CLI
+              uses: cli/gh-actions@v2
               with:
-                  name: apk-release
-                  path: app/build/outputs/apk/release/app-release.apk
+                  version: 'latest'
+
+            - name: Borrar Release existente (si existe) con tag "latest"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  if gh release view latest > /dev/null 2>&1; then
+                    echo "Release 'latest' encontrado, borrándolo..."
+                    gh release delete latest --yes
+                  else
+                    echo "No existe release 'latest'."
+                  fi
+
+            - name: Crear Release con tag "latest"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  gh release create latest -t "Latest APK" -n "Release automatizada con el APK más reciente"
+
+            - name: Subir APK al Release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  gh release upload latest app/build/outputs/apk/release/app-release.apk --clobber
