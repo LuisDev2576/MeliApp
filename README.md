@@ -17,6 +17,22 @@
   <li><a href="#arquitectura-estructura">Arquitectura y Estructura del Proyecto</a></li>
   <li><a href="#requerimientos">Requerimientos Técnicos y Prácticos</a></li>
   <li><a href="#tecnologias-librerias">Tecnologías y Librerías Utilizadas</a></li>
+  <li>
+    <a href="#ktlint">
+      <img src="https://github.com/user-attachments/assets/4105c2b1-7907-44c1-bbe2-9aa7e25fab97" alt="New" style="width:32px; vertical-align:middle;" /> Ktlint
+    </a>
+  </li>
+  <li>
+    <a href="#tests-instrumentados">
+      <img src="https://github.com/user-attachments/assets/4105c2b1-7907-44c1-bbe2-9aa7e25fab97" alt="New" style="width:32px; vertical-align:middle;" /> Tests Instrumentados
+    </a>
+  </li>
+  <li>
+    <a href="#github-actions">
+      <img src="https://github.com/user-attachments/assets/4105c2b1-7907-44c1-bbe2-9aa7e25fab97" alt="New" style="width:32px; vertical-align:middle;" /> Integración con GitHub Actions
+    </a>
+  </li>    
+  <li><a href="#firebase-crashlytics">Firebase Crashlytics</a></li>
   <li><a href="#pruebas-unitarias">Pruebas Unitarias</a></li>
   <li><a href="#ejecutar">Cómo Ejecutar el Proyecto</a></li>
   <li><a href="#download">Download</a></li>
@@ -34,7 +50,7 @@
   consume las APIs públicas de 
   <a href="https://developers.mercadolibre.com.ar/es_ar/items-y-busquedas" target="_blank">Mercado Libre</a>. 
   Permite a los usuarios autenticarse (registro, inicio de sesión y restablecimiento de contraseña), 
-  buscar productos por medio de la barra de búsqueda integrada en la mayoría de pantallas y 
+  buscar productos mediante la barra de búsqueda integrada en la mayoría de pantallas y 
   visualizar tanto los resultados como el detalle de cada producto. 
 </p>
 <p>
@@ -50,13 +66,13 @@
   <li><strong>Búsqueda Global</strong>: Barra de búsqueda en la parte superior (TopBar) 
     accesible en la mayoría de pantallas, mostrando resultados en tiempo real.</li>
   <li><strong>Pantalla de Resultados</strong>: Lista con datos relevantes (título, precio, 
-    thumbnail, información de envío, etc.), soporte para estados de carga, error y sin resultados.</li>
+    thumbnail, información de envío, etc.), con soporte para estados de carga, error y sin resultados.</li>
   <li><strong>Pantalla de Detalle</strong>: Muestra información detallada del producto seleccionado, 
     incluyendo precio, fotos, envío, cuotas, garantía, etc.</li>
   <li><strong>Pantallas de Autenticación</strong>: (Login, Registro y Restablecimiento de Contraseña) 
     con validaciones de campos y uso de Firebase para la gestión de usuarios.</li>
   <li><strong>Arquitectura MVI Consistente</strong>: Cada feature posee su propio ViewModel, 
-    states (Estados) e intents, aislando la lógica de negocio de la interfaz de usuario.</li>
+    states (estados) e intents, aislando la lógica de negocio de la interfaz de usuario.</li>
   <li><strong>Flujo de Navegación Unificado</strong>: Gestión de rutas y pasos de navegación 
     mediante <em>Navigation Compose</em>.</li>
 </ul>
@@ -330,21 +346,283 @@ meliapp/
         <em>accompanist-pager</em> para slides y carouseles, etc.
       </td>
     </tr>
+    <tr>
+      <td><strong>Estilo de Código</strong></td>
+      <td>
+        <strong>Ktlint</strong> (integrado en el CI con GitHub Actions)
+      </td>
+    </tr>
   </tbody>
 </table>
+
+<!-- Ktlint -->
+<h2 id="ktlint">Ktlint</h2>
+<p>
+  Se ha implementado <strong>Ktlint</strong> para asegurar un código limpio, consistente y conforme a las 
+  buenas prácticas. La verificación se ejecuta automáticamente durante el proceso de build a través de GitHub Actions.
+</p>
+<pre>
+# Configuración de Ktlint (ejemplo de .editorconfig)
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = false
+max_line_length = 160
+...
+</pre>
+<p>
+  <strong>Resultado de Ktlint:</strong>
+</p>
+<div style="display: flex; justify-content: center;">
+  <img src="https://github.com/user-attachments/assets/9e486d17-7876-4341-a07f-210c337f03f6" alt="Resultado Ktlint" style="width:100%;" />
+</div>
+
+<!-- Tests Instrumentados -->
+<h2 id="tests-instrumentados">Tests Instrumentados</h2>
+<p>
+  Se han añadido <strong>tests instrumentados</strong> para validar la funcionalidad de la interfaz de usuario en 
+  dispositivos/emuladores reales. Estas pruebas permiten garantizar que la app funcione correctamente en condiciones 
+  de uso reales.
+</p>
+<p>
+  <strong>Ejemplo de Test Instrumentado:</strong>
+</p>
+<div style="display: flex; justify-content: center;">
+  <img src="https://github.com/user-attachments/assets/35e329d4-b5ee-46a0-8390-7b4a355d2767" alt="Ejemplo de Test Instrumentado" style="width:80%;" />
+</div>
+<p>
+  <strong>Resultado de Test Instrumentado:</strong>
+</p>
+<div style="display: flex; justify-content: center;">
+  <img src="https://github.com/user-attachments/assets/04e90bd5-2b1b-43c3-a9d3-8f2444f742db" alt="Resultado de Test Instrumentado" style="width:100%;" />
+</div>
+
+<!-- Integración con GitHub Actions -->
+<h2 id="github-actions">Integración con GitHub Actions</h2>
+<p>
+  Este proyecto utiliza <strong>GitHub Actions</strong> para automatizar procesos críticos que aseguran la integridad, calidad y estabilidad del código. Cada acción se encarga de ejecutar una serie de tareas que ayudan a detectar errores de manera temprana, garantizar un formato consistente y automatizar el despliegue de la aplicación.
+</p>
+<p>
+  Es importante destacar que <strong>todos los pull requests quedan bloqueados hasta que se aprueban todas las pruebas</strong>, evitando la integración de código defectuoso en la rama principal.
+</p>
+<div style="display: flex; justify-content: center;">
+  <img src="https://github.com/user-attachments/assets/39e9d906-f4c1-4d46-8b4f-f1f42ec41a53" alt="Resultado de GitHub Actions" style="width:80%;" />
+</div>
+<h3>Acciones Configuradas</h3>
+<ul>
+  <li>
+    <strong>Validaciones PR</strong>: 
+    <ul>
+      <li>
+        <em>Cuándo se activa:</em> En cada pull request dirigido a la rama <code>master</code>.
+      </li>
+      <li>
+        <em>Qué hace:</em> Ejecuta pruebas unitarias y tests instrumentados para validar que los cambios propuestos no rompan la funcionalidad existente. Incluye la configuración del JDK, ejecución de <code>./gradlew test</code> y la inicialización de un emulador Android para los tests instrumentados.
+      </li>
+      <li>
+        <em>Importancia:</em> Garantiza que cada contribución pase por un riguroso proceso de validación, manteniendo un alto estándar de calidad en el código y evitando la integración de cambios defectuosos.
+      </li>
+    </ul>
+  </li>
+  <li>
+    <strong>Push Build</strong>: 
+    <ul>
+      <li>
+        <em>Cuándo se activa:</em> En cada push a cualquier rama excepto <code>master</code>.
+      </li>
+      <li>
+        <em>Qué hace:</em> Compila la aplicación en modo Debug y ejecuta la verificación del formato del código mediante <strong>Ktlint</strong> (a través de <code>./gradlew ktlintCheck</code>).
+      </li>
+      <li>
+        <em>Importancia:</em> Permite detectar de forma temprana problemas de compilación y de estilo en el código, facilitando la corrección antes de que se integren en la rama principal.
+      </li>
+    </ul>
+  </li>
+  <li>
+    <strong>Build y Despliegue en Master</strong>: 
+    <ul>
+      <li>
+        <em>Cuándo se activa:</em> Al hacer push directamente a la rama <code>master</code>.
+      </li>
+      <li>
+        <em>Qué hace:</em> Ejecuta una serie de tareas que incluyen:
+        <ul>
+          <li>Compilación de la aplicación en modo Debug y Release.</li>
+          <li>Ejecución de las validaciones de Ktlint y pruebas unitarias.</li>
+          <li>Gestión automatizada de releases en GitHub: se borra cualquier release existente etiquetado como "latest" y se crea uno nuevo con el APK más reciente.</li>
+        </ul>
+      </li>
+      <li>
+        <em>Importancia:</em> Asegura que el código en la rama principal esté siempre en un estado desplegable y que los releases se actualicen automáticamente con la última versión estable del APK.
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Extracto de la Configuración de GitHub Actions</h3>
+<pre>
+name: Validaciones PR
+
+on:
+    pull_request:
+        branches: [ master ]
+
+jobs:
+    pr_checks:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout del código del PR
+              uses: actions/checkout@v3
+
+            - name: Configurar JDK 17
+              uses: actions/setup-java@v3
+              with:
+                  distribution: 'temurin'
+                  java-version: '17'
+
+            - name: Dar permisos de ejecución al Gradle Wrapper
+              run: chmod +x ./gradlew
+
+            - name: Ejecutar tests unitarios (u otras validaciones)
+              run: ./gradlew test
+
+            # Crear directorio para AVD (en caso de que no exista)
+            - name: Crear directorio para AVD
+              run: mkdir -p ~/.android/avd
+
+            - name: Configurar emulador Android y ejecutar tests instrumentados
+              uses: ReactiveCircus/android-emulator-runner@v2.18.0
+              with:
+                  api-level: 33
+                  target: google_apis
+                  arch: x86_64
+                  boot-timeout: 300
+                  script: ./gradlew connectedCheck
+</pre>
+
+<pre>
+name: Push Build
+
+on:
+    push:
+        branches-ignore:
+            - master
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout del código
+              uses: actions/checkout@v3
+
+            - name: Configurar JDK 17
+              uses: actions/setup-java@v3
+              with:
+                  distribution: 'temurin'
+                  java-version: '17'
+
+            - name: Dar permisos de ejecución al Gradle Wrapper
+              run: chmod +x ./gradlew
+
+            - name: Ejecutar Ktlint y compilar la app (Debug)
+              run: ./gradlew ktlintCheck assembleDebug
+</pre>
+
+<pre>
+name: Build y Despliegue en Master
+
+on:
+    push:
+        branches:
+            - master
+
+permissions:
+    contents: write
+
+jobs:
+    build_release:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout del código de master
+              uses: actions/checkout@v3
+
+            - name: Configurar JDK 17
+              uses: actions/setup-java@v3
+              with:
+                  distribution: 'temurin'
+                  java-version: '17'
+
+            - name: Dar permisos de ejecución al Gradle Wrapper
+              run: chmod +x ./gradlew
+
+            - name: Ejecutar Ktlint, compilar la app (Debug y Release) y tests unitarios
+              run: |
+                  ./gradlew ktlintCheck assembleDebug test assembleRelease
+
+            - name: Instalar GitHub CLI
+              run: |
+                  sudo apt update
+                  sudo apt install gh -y
+
+            - name: Borrar Release existente (si existe) con tag "latest"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  if gh release view latest > /dev/null 2>&1; then
+                    echo "Release 'latest' encontrado, borrándolo..."
+                    gh release delete latest --yes
+                  else
+                    echo "No existe release 'latest'."
+                  fi
+
+            - name: Crear Release con tag "latest"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  gh release create latest -t "Latest APK" -n "Release automatizada con el APK más reciente"
+
+            - name: Subir APK al Release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  gh release upload latest app/build/outputs/apk/release/app-release.apk --clobber
+</pre>
+
+<p>
+  Con esta configuración, se garantiza que solo se integren cambios que cumplan con todas las pruebas y validaciones necesarias, manteniendo así un estándar alto de calidad en el código del proyecto.
+</p>
+
+<!-- Firebase Crashlytics -->
+<h2 id="firebase-crashlytics">Firebase Crashlytics</h2>
+<p>
+  Se ha integrado <strong>Firebase Crashlytics</strong> para el monitoreo en tiempo real de fallos y errores en producción. 
+  Esta herramienta permite identificar problemas en la app de manera rápida y efectiva, ayudando a mantener una alta calidad de 
+  la experiencia de usuario.
+</p>
+
+<p>
+  <strong>Captura de Firebase Crashlytics:</strong>
+</p>
+<div style="display: flex; justify-content: center;">
+  <img src="https://github.com/user-attachments/assets/b384f8ab-ef39-44ad-9454-ec9f18b9732b" alt="Firebase Crashlytics" style="width:100%;" />
+</div>
 
 <!-- Pruebas Unitarias -->
 <h2 id="pruebas-unitarias">Pruebas Unitarias</h2>
 <p>
-  Para asegurar la calidad del proyecto, se implementaron pruebas <strong>unitarias</strong> 
-  en las capas críticas:
+  Para asegurar la calidad del proyecto, se implementaron pruebas <strong>unitarias</strong> en las capas críticas:
 </p>
 <ul>
   <li><em>ViewModels</em>: validación de flujos MVI (intents, estados, etc.).</li>
   <li><em>UseCases</em>: lógica de negocio (cálculos, validaciones, etc.).</li>
   <li><em>Repositorios</em>: correcto manejo y mapeo de datos (API de Mercado Libre, Firebase, etc.).</li>
 </ul>
-
 <p>
   Estructura de los tests:
 </p>
@@ -395,9 +673,14 @@ com/
             └── ExampleUnitTest.kt
 </pre>
 <p>
-  Se emplean <code>MockK</code> y <code>kotlinx.coroutines.test</code> para aislar las 
-  dependencias y verificar comportamientos específicos.
+  Se emplean <code>MockK</code> y <code>kotlinx.coroutines.test</code> para aislar las dependencias y verificar comportamientos específicos.
 </p>
+<p>
+  <strong>Resultado de Test Unitarios:</strong>
+</p>
+<div style="display: flex; justify-content: center;">
+  <img src="https://github.com/user-attachments/assets/d08574ba-33c3-462e-9bcb-f756e445f9dd" alt="Resultado de Test Unitarios" style="width:100%;" />
+</div>
 
 <!-- Cómo Ejecutar el Proyecto -->
 <h2 id="ejecutar">Cómo Ejecutar el Proyecto</h2>
@@ -480,12 +763,11 @@ cd meliapp</code></pre>
   </li>
 </ol>
 
-
 <!-- Contribuciones -->
 <h2 id="contribuciones">Contribuciones</h2>
 <p>
   ¡Todas las aportaciones son apreciadas! Si tienes sugerencias, ideas o encuentras errores, no dudes en abrir un 
-  <a href="LINK_A_ISSUES" target="_blank">issue</a> con tus sugerencias, ideas o reporte de bugs, 
+  <a href="LINK_A_ISSUES" target="_blank">issue</a> con tus sugerencias, ideas o reporte de bugs. 
   También puedes contribuir directamente creando un <a href="LINK_A_PULL_REQUEST" target="_blank">pull request</a> con tus 
   cambios propuestos.
 </p>
@@ -497,16 +779,13 @@ cd meliapp</code></pre>
   <strong>Apache License 2.0</strong>. Para más detalles, revisa el archivo 
   <code>LICENSE</code> en este repositorio.
 </p>
-
 <pre>
 Apache License
 Version 2.0, January 2004
 http://www.apache.org/licenses/LICENSE-2.0
 </pre>
-
 <p>
   Salvo que la ley lo exija o se haya acordado por escrito, este software se distribuye "TAL CUAL", SIN NINGUNA GARANTÍA NI CONDICIONES DE NINGÚN TIPO, ya sean explícitas o implícitas. Consulta la licencia para conocer más sobre los permisos y las limitaciones aplicables.
 </p>
 
 </body>
-</html>
