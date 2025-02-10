@@ -1,5 +1,3 @@
-// features/authentication/presentation/register/RegisterIntent.kt
-
 package com.luis.dev.meliapp.features.authentication.presentation.register
 
 sealed class RegisterIntent {

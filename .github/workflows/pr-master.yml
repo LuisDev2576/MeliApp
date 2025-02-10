@@ -22,3 +22,9 @@ jobs:
 
             - name: Ejecutar tests unitarios (u otras validaciones)
               run: ./gradlew test
+
+            - name: Configurar emulador Android y ejecutar tests instrumentados
+              uses: r0adkll/android-emulator-runner@v2
+              with:
+                  api-level: 33
+                  script: ./gradlew connectedCheck

@@ -3,6 +3,7 @@ package com.luis.dev.meliapp.features.authentication.presentation.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.luis.dev.meliapp.features.authentication.data.repository.RegistrationRepositoryResult
+import com.luis.dev.meliapp.features.authentication.domain.models.RegisterError
 import com.luis.dev.meliapp.features.authentication.domain.usecases.RegisterUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,22 +37,22 @@ class RegisterViewModel(
     fun handleIntent(intent: RegisterIntent) {
         when (intent) {
             is RegisterIntent.FullNameChanged -> {
-                _state.value = _state.value.copy(fullName = intent.name, errorMessage = null)
+                _state.value = _state.value.copy(fullName = intent.name, error = null)
             }
             is RegisterIntent.EmailChanged -> {
-                _state.value = _state.value.copy(email = intent.email, errorMessage = null)
+                _state.value = _state.value.copy(email = intent.email, error = null)
             }
             is RegisterIntent.PasswordChanged -> {
-                _state.value = _state.value.copy(password = intent.password, errorMessage = null)
+                _state.value = _state.value.copy(password = intent.password, error = null)
             }
             is RegisterIntent.ConfirmPasswordChanged -> {
-                _state.value = _state.value.copy(confirmPassword = intent.confirmPassword, errorMessage = null)
+                _state.value = _state.value.copy(confirmPassword = intent.confirmPassword, error = null)
             }
             is RegisterIntent.RegisterClicked -> {
                 register()
             }
             is RegisterIntent.ClearError -> {
-                _state.value = _state.value.copy(errorMessage = null)
+                _state.value = _state.value.copy(error = null)
             }
         }
     }
@@ -65,23 +66,23 @@ class RegisterViewModel(
             val current = _state.value
 
             if (current.fullName.isBlank()) {
-                _state.value = current.copy(errorMessage = "El nombre no puede estar vacío")
+                _state.value = current.copy(error = RegisterError.EmptyName)
                 return@launch
             }
             if (!isEmailValid(current.email)) {
-                _state.value = current.copy(errorMessage = "Email inválido")
+                _state.value = current.copy(error = RegisterError.InvalidEmail)
                 return@launch
             }
             if (current.password.isBlank() || current.password.length < 6) {
-                _state.value = current.copy(errorMessage = "La contraseña debe tener al menos 6 caracteres")
+                _state.value = current.copy(error = RegisterError.WeakPassword())
                 return@launch
             }
             if (current.password != current.confirmPassword) {
-                _state.value = current.copy(errorMessage = "Las contraseñas no coinciden")
+                _state.value = current.copy(error = RegisterError.PasswordMismatch)
                 return@launch
             }
 
-            _state.value = current.copy(isLoading = true, errorMessage = null)
+            _state.value = current.copy(isLoading = true, error = null)
 
             val result = registerUseCase(current.email, current.password)
             when (result) {
@@ -89,7 +90,7 @@ class RegisterViewModel(
                     _state.value = _state.value.copy(isLoading = false, registeredSuccess = true)
                 }
                 is RegistrationRepositoryResult.Error -> {
-                    _state.value = _state.value.copy(isLoading = false, errorMessage = result.message)
+                    _state.value = _state.value.copy(isLoading = false, error = RegisterError.FirebaseError(result.message))
                 }
                 RegistrationRepositoryResult.Loading -> {
                     _state.value = _state.value.copy(isLoading = true)

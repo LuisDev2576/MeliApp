@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.luis.dev.meliapp.R
+import com.luis.dev.meliapp.features.authentication.domain.models.ResetPasswordError
 import com.luis.dev.meliapp.features.authentication.presentation.components.CustomActionButton
 import com.luis.dev.meliapp.features.authentication.presentation.components.EmailInputField
 import com.luis.dev.meliapp.features.authentication.presentation.components.GreetingMessage
@@ -24,7 +25,7 @@ import com.luis.dev.meliapp.features.authentication.presentation.components.Navi
 /**
  * Pantalla para restablecer la contraseña de un usuario mediante el envío de un correo electrónico.
  *
- * @param state Estado actual del flujo de restablecimiento de contraseña, incluyendo el correo ingresado y mensajes de error.
+ * @param state Estado actual del flujo de restablecimiento de contraseña, incluyendo el correo ingresado y errores tipificados.
  * @param onIntent Callback para manejar las intenciones del usuario, como cambios en el correo electrónico o envío del formulario.
  * @param onNavigateBack Callback que se ejecuta cuando el usuario desea regresar a la pantalla anterior.
  */
@@ -37,25 +38,27 @@ fun ResetPasswordScreen(
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
-    BackHandler {
-        onNavigateBack()
-    }
+    BackHandler { onNavigateBack() }
 
     if (state.resetEmailSent) {
         LaunchedEffect(Unit) {
             Toast.makeText(
                 context,
-                "Correo de recuperación enviado exitosamente",
+                context.getString(R.string.password_reset_email_sent),
                 Toast.LENGTH_SHORT
             ).show()
             onNavigateBack()
         }
     }
 
-    if (state.errorMessage != null) {
-        LaunchedEffect(state.errorMessage) {
+    state.error?.let { error ->
+        val errorMessage = when (error) {
+            is ResetPasswordError.InvalidEmail -> context.getString(R.string.error_invalid_email)
+            is ResetPasswordError.FirebaseError -> error.message ?: context.getString(R.string.error_try_again)
+        }
+        LaunchedEffect(error) {
             focusManager.clearFocus()
-            Toast.makeText(context, state.errorMessage, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -79,15 +82,14 @@ fun ResetPasswordScreen(
             )
 
             Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.End
             ) {
                 EmailInputField(
                     email = state.email,
                     onEmailChange = { onIntent(ResetPasswordIntent.EmailChanged(it)) },
-                    hasError = state.errorMessage?.contains("Email") == true
+                    hasError = state.error is ResetPasswordError.InvalidEmail
                 )
             }
 
@@ -104,7 +106,7 @@ fun ResetPasswordScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 CustomActionButton(
-                    label = "Enviar correo",
+                    labelResId = R.string.send_button,
                     isEnabled = !state.isLoading,
                     onAction = { onIntent(ResetPasswordIntent.ResetClicked) }
                 )

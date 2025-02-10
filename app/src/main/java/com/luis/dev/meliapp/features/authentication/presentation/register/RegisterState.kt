@@ -1,6 +1,6 @@
-// features/authentication/presentation/register/RegisterState.kt
-
 package com.luis.dev.meliapp.features.authentication.presentation.register
+
+import com.luis.dev.meliapp.features.authentication.domain.models.RegisterError
 
 data class RegisterState(
     val fullName: String = "",
@@ -8,6 +8,6 @@ data class RegisterState(
     val password: String = "",
     val confirmPassword: String = "",
     val isLoading: Boolean = false,
-    val errorMessage: String? = null,
+    val error: RegisterError? = null,
     val registeredSuccess: Boolean = false
 )

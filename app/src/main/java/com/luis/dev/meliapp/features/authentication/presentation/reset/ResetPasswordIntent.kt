@@ -1,5 +1,3 @@
-// features/authentication/presentation/reset/ResetPasswordIntent.kt
-
 package com.luis.dev.meliapp.features.authentication.presentation.reset
 
 sealed class ResetPasswordIntent {
