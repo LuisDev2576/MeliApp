@@ -2,6 +2,7 @@ package com.luis.dev.meliapp.features.authentication.presentation.register
 
 import com.google.firebase.auth.FirebaseUser
 import com.luis.dev.meliapp.features.authentication.data.repository.RegistrationRepositoryResult
+import com.luis.dev.meliapp.features.authentication.domain.models.RegisterError
 import com.luis.dev.meliapp.features.authentication.domain.usecases.RegisterUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -44,7 +45,7 @@ class RegisterViewModelTest {
     }
 
     @Test
-    fun `when name is updated, it is reflected in the state and errorMessage is cleared`() = runTest {
+    fun `when name is updated, it is reflected in the state and error is cleared`() = runTest {
         // Given
         val name = "Luis Developer"
 
@@ -54,13 +55,13 @@ class RegisterViewModelTest {
         // Then
         val state = viewModel.state.first()
         assertEquals(name, state.fullName)
-        assertNull(state.errorMessage)
+        assertNull(state.error)
     }
 
     @Test
-    fun `when Register is clicked with an empty name, an error is shown`() = runTest {
+    fun `when Register is clicked with an empty name, error is set to EmptyName`() = runTest {
         // Given
-        viewModel.handleIntent(RegisterIntent.FullNameChanged("")) // Empty name
+        viewModel.handleIntent(RegisterIntent.FullNameChanged("")) // Nombre vacío
         viewModel.handleIntent(RegisterIntent.EmailChanged("test@example.com"))
         viewModel.handleIntent(RegisterIntent.PasswordChanged("123456"))
         viewModel.handleIntent(RegisterIntent.ConfirmPasswordChanged("123456"))
@@ -71,12 +72,12 @@ class RegisterViewModelTest {
 
         // Then
         val state = viewModel.state.first()
-        assertEquals("El nombre no puede estar vacío", state.errorMessage)
+        assertEquals(RegisterError.EmptyName, state.error)
         assertFalse(state.isLoading)
     }
 
     @Test
-    fun `when Register is clicked with an invalid email, an error is shown`() = runTest {
+    fun `when Register is clicked with an invalid email, error is set to InvalidEmail`() = runTest {
         // Given
         viewModel.handleIntent(RegisterIntent.FullNameChanged("John Doe"))
         viewModel.handleIntent(RegisterIntent.EmailChanged("testexample.com"))
@@ -89,15 +90,15 @@ class RegisterViewModelTest {
 
         // Then
         val state = viewModel.state.first()
-        assertEquals("Email inválido", state.errorMessage)
+        assertEquals(RegisterError.InvalidEmail, state.error)
     }
 
     @Test
-    fun `when Register is clicked with a password less than 6 characters, an error is shown`() = runTest {
+    fun `when Register is clicked with a password less than 6 characters, error is set to WeakPassword`() = runTest {
         // Given
         viewModel.handleIntent(RegisterIntent.FullNameChanged("Jane Doe"))
         viewModel.handleIntent(RegisterIntent.EmailChanged("test@example.com"))
-        viewModel.handleIntent(RegisterIntent.PasswordChanged("12345")) // 5 characters
+        viewModel.handleIntent(RegisterIntent.PasswordChanged("12345")) // 5 caracteres
         viewModel.handleIntent(RegisterIntent.ConfirmPasswordChanged("12345"))
 
         // When
@@ -106,11 +107,11 @@ class RegisterViewModelTest {
 
         // Then
         val state = viewModel.state.first()
-        assertEquals("La contraseña debe tener al menos 6 caracteres", state.errorMessage)
+        assertEquals(RegisterError.WeakPassword(), state.error)
     }
 
     @Test
-    fun `when Register is clicked with non-matching passwords, an error is shown`() = runTest {
+    fun `when Register is clicked with non-matching passwords, error is set to PasswordMismatch`() = runTest {
         // Given
         viewModel.handleIntent(RegisterIntent.FullNameChanged("Jane Doe"))
         viewModel.handleIntent(RegisterIntent.EmailChanged("test@example.com"))
@@ -123,7 +124,7 @@ class RegisterViewModelTest {
 
         // Then
         val state = viewModel.state.first()
-        assertEquals("Las contraseñas no coinciden", state.errorMessage)
+        assertEquals(RegisterError.PasswordMismatch, state.error)
     }
 
     @Test
@@ -137,13 +138,13 @@ class RegisterViewModelTest {
                 every { uid } returns "UID_MOCK"
             }
 
-            // Set up valid state
+            // Configuramos un estado válido
             viewModel.handleIntent(RegisterIntent.FullNameChanged(fullName))
             viewModel.handleIntent(RegisterIntent.EmailChanged(email))
             viewModel.handleIntent(RegisterIntent.PasswordChanged(password))
             viewModel.handleIntent(RegisterIntent.ConfirmPasswordChanged(password))
 
-            // Mock successful response from registerUseCase
+            // Mock de respuesta exitosa de registerUseCase
             coEvery { mockRegisterUseCase(email, password) } returns RegistrationRepositoryResult.Success(mockUser)
 
             // When
@@ -154,24 +155,25 @@ class RegisterViewModelTest {
             val state = viewModel.state.first()
             assertTrue(state.registeredSuccess)
             assertFalse(state.isLoading)
-            assertNull(state.errorMessage)
+            assertNull(state.error)
 
             coVerify(exactly = 1) { mockRegisterUseCase(email, password) }
         }
 
     @Test
-    fun `when registerUseCase returns Error, the error message is reflected in the state`() = runTest {
+    fun `when registerUseCase returns Error, error is set to FirebaseError`() = runTest {
         // Given
         val fullName = "Jane Doe"
         val email = "test@example.com"
         val password = "123456"
+        val errorMsg = "Error en registro"
 
         viewModel.handleIntent(RegisterIntent.FullNameChanged(fullName))
         viewModel.handleIntent(RegisterIntent.EmailChanged(email))
         viewModel.handleIntent(RegisterIntent.PasswordChanged(password))
         viewModel.handleIntent(RegisterIntent.ConfirmPasswordChanged(password))
 
-        coEvery { mockRegisterUseCase(email, password) } returns RegistrationRepositoryResult.Error("Error en registro")
+        coEvery { mockRegisterUseCase(email, password) } returns RegistrationRepositoryResult.Error(errorMsg)
 
         // When
         viewModel.handleIntent(RegisterIntent.RegisterClicked)
@@ -179,23 +181,23 @@ class RegisterViewModelTest {
 
         // Then
         val state = viewModel.state.first()
-        assertEquals("Error en registro", state.errorMessage)
+        assertEquals(RegisterError.FirebaseError(errorMsg), state.error)
         assertFalse(state.isLoading)
         assertFalse(state.registeredSuccess)
     }
 
     @Test
-    fun `when ClearError is sent, the error is cleared in the state`() = runTest {
-        // Given: Force an error
+    fun `when ClearError is sent, error is cleared in the state`() = runTest {
+        // Given: Forzamos un error
         viewModel.handleIntent(RegisterIntent.FullNameChanged(""))
         viewModel.handleIntent(RegisterIntent.RegisterClicked)
         testDispatcher.scheduler.advanceUntilIdle()
-        assertNotNull(viewModel.state.first().errorMessage)
+        assertNotNull(viewModel.state.first().error)
 
         // When
         viewModel.handleIntent(RegisterIntent.ClearError)
 
         // Then
-        assertNull(viewModel.state.first().errorMessage)
+        assertNull(viewModel.state.first().error)
     }
 }

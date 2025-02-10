@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -54,7 +55,10 @@ fun ConfirmPasswordField(
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { onConfirmPasswordChange(it) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            ),
             trailingIcon = {
                 if (isPasswordVisible) {
                     Icon(
@@ -79,10 +83,12 @@ fun ConfirmPasswordField(
                     style = MaterialTheme.typography.bodyLarge
                 )
             },
-            keyboardActions = KeyboardActions(onDone = {
-                focusManager.clearFocus()
-                onDone()
-            }),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                    onDone()
+                }
+            ),
             isError = hasError,
             shape = RoundedCornerShape(20),
             modifier = Modifier

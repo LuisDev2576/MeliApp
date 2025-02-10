@@ -1,5 +1,3 @@
-// features/authentication/presentation/login/LoginIntent.kt
-
 package com.luis.dev.meliapp.features.authentication.presentation.login
 
 sealed class LoginIntent {

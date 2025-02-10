@@ -12,22 +12,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.luis.dev.meliapp.R
 import com.luis.dev.meliapp.ui.theme.MeliAppTheme
 
 /**
  * Componente de botón con un diseño personalizable que muestra un texto o un indicador de carga
  * dependiendo de su estado habilitado.
  *
- * @param text Texto que se mostrará dentro del botón.
+ * @param labelResId ID del recurso string que se mostrará dentro del botón.
  * @param modifier Modificador para personalizar el estilo y el comportamiento del botón.
  * @param isEnabled Indica si el botón está habilitado (true) o deshabilitado (false).
  * @param onAction Acción que se ejecutará cuando se presione el botón.
  */
 @Composable
 fun CustomActionButton(
-    label: String,
+    labelResId: Int,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     onAction: () -> Unit
@@ -45,7 +47,7 @@ fun CustomActionButton(
         shape = RoundedCornerShape(10)
     ) {
         if (isEnabled) {
-            Text(text = label, color = Color.White)
+            Text(text = stringResource(id = labelResId), color = Color.White)
         } else {
             CircularProgressIndicator(color = Color.White)
         }
@@ -57,7 +59,7 @@ fun CustomActionButton(
 fun ActionButtonPreviewEnabled() {
     MeliAppTheme {
         Box(modifier = Modifier.background(Color.White)) {
-            CustomActionButton(label = "Click Me", onAction = { /* Handle click */ })
+            CustomActionButton(labelResId = R.string.create_account, onAction = { /* Handle click */ })
         }
     }
 }
@@ -67,7 +69,7 @@ fun ActionButtonPreviewEnabled() {
 fun ActionButtonPreviewDisabled() {
     MeliAppTheme {
         Box(modifier = Modifier.background(Color.White)) {
-            CustomActionButton(label = "Loading", isEnabled = false, onAction = { /* Handle click */ })
+            CustomActionButton(labelResId = R.string.loading, isEnabled = false, onAction = { /* Handle click */ })
         }
     }
 }

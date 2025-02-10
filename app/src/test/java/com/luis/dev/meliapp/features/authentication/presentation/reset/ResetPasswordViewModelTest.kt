@@ -1,6 +1,7 @@
 package com.luis.dev.meliapp.features.authentication.presentation.reset
 
 import com.luis.dev.meliapp.features.authentication.data.repository.ResetPasswordRepositoryResult
+import com.luis.dev.meliapp.features.authentication.domain.models.ResetPasswordError
 import com.luis.dev.meliapp.features.authentication.domain.usecases.ResetPasswordUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -50,23 +51,22 @@ class ResetPasswordViewModelTest {
         // Then
         val currentState = viewModel.state.first()
         assertEquals(newEmail, currentState.email)
-        assertNull(currentState.errorMessage)
+        assertNull(currentState.error)
     }
 
     @Test
-    fun `when ResetClicked is sent with an invalid email, error message is shown`() = runTest {
+    fun `when ResetClicked is sent with an invalid email, error is set to InvalidEmail and loading is false`() = runTest {
         // Given an invalid email
         val invalidEmail = "testexample.com"
         viewModel.handleIntent(ResetPasswordIntent.EmailChanged(invalidEmail))
 
         // When
         viewModel.handleIntent(ResetPasswordIntent.ResetClicked)
-        // Advance coroutines
         testDispatcher.scheduler.advanceUntilIdle()
 
         // Then
         val currentState = viewModel.state.first()
-        assertEquals("Email inválido", currentState.errorMessage)
+        assertEquals(ResetPasswordError.InvalidEmail, currentState.error)
         assertFalse(currentState.isLoading)
     }
 
@@ -87,20 +87,21 @@ class ResetPasswordViewModelTest {
         val currentState = viewModel.state.first()
         assertTrue(currentState.resetEmailSent)
         assertFalse(currentState.isLoading)
-        assertNull(currentState.errorMessage)
+        assertNull(currentState.error)
 
-        // Verify that it was called once
+        // Verify that the use case was called exactly once
         coVerify(exactly = 1) { mockResetPasswordUseCase.invoke(validEmail) }
     }
 
     @Test
-    fun `when ResetClicked is sent with a valid email and useCase returns Error, errorMessage is set`() = runTest {
+    fun `when ResetClicked is sent with a valid email and useCase returns Error, error is set to FirebaseError`() = runTest {
         // Given a valid email
         val validEmail = "test@example.com"
         viewModel.handleIntent(ResetPasswordIntent.EmailChanged(validEmail))
 
-        // Mock error
-        coEvery { mockResetPasswordUseCase.invoke(validEmail) } returns ResetPasswordRepositoryResult.Error("Error al resetear contraseña")
+        // Mock error response
+        val errorMsg = "Error al resetear contraseña"
+        coEvery { mockResetPasswordUseCase.invoke(validEmail) } returns ResetPasswordRepositoryResult.Error(errorMsg)
 
         // When
         viewModel.handleIntent(ResetPasswordIntent.ResetClicked)
@@ -110,23 +111,23 @@ class ResetPasswordViewModelTest {
         val currentState = viewModel.state.first()
         assertFalse(currentState.isLoading)
         assertFalse(currentState.resetEmailSent)
-        assertEquals("Error al resetear contraseña", currentState.errorMessage)
+        assertEquals(ResetPasswordError.FirebaseError(errorMsg), currentState.error)
     }
 
     @Test
-    fun `when ClearError is sent, errorMessage is set to null`() = runTest {
-        // Given we have an existing error
+    fun `when ClearError is sent, error is set to null`() = runTest {
+        // Given that an error is set (por ejemplo, con un email inválido)
         viewModel.handleIntent(ResetPasswordIntent.EmailChanged("invalid"))
         viewModel.handleIntent(ResetPasswordIntent.ResetClicked)
         testDispatcher.scheduler.advanceUntilIdle()
 
         // State with error
-        assertNotNull(viewModel.state.first().errorMessage)
+        assertNotNull(viewModel.state.first().error)
 
         // When
         viewModel.handleIntent(ResetPasswordIntent.ClearError)
 
         // Then
-        assertNull(viewModel.state.first().errorMessage)
+        assertNull(viewModel.state.first().error)
     }
 }

@@ -3,6 +3,7 @@ package com.luis.dev.meliapp.features.authentication.presentation.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.luis.dev.meliapp.features.authentication.data.repository.AuthRepositoryResult
+import com.luis.dev.meliapp.features.authentication.domain.models.LoginError
 import com.luis.dev.meliapp.features.authentication.domain.usecases.LoginUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,52 +20,39 @@ class LoginViewModel(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
-
-    /**
-     * Estado público inmutable que representa el estado actual de la vista.
-     */
     val state: StateFlow<LoginState> get() = _state
 
-    /**
-     * Maneja las intenciones enviadas desde la vista, actualizando el estado o ejecutando acciones según corresponda.
-     *
-     * @param intent Intención del usuario, como cambios en los campos de texto o iniciar sesión.
-     */
     fun handleIntent(intent: LoginIntent) {
         when (intent) {
             is LoginIntent.EmailChanged -> {
-                _state.value = _state.value.copy(email = intent.email, errorMessage = null)
+                _state.value = _state.value.copy(email = intent.email, error = null)
             }
             is LoginIntent.PasswordChanged -> {
-                _state.value = _state.value.copy(password = intent.password, errorMessage = null)
+                _state.value = _state.value.copy(password = intent.password, error = null)
             }
             is LoginIntent.LoginClicked -> {
                 login()
             }
             is LoginIntent.ClearError -> {
-                _state.value = _state.value.copy(errorMessage = null)
+                _state.value = _state.value.copy(error = null)
             }
         }
     }
 
-    /**
-     * Realiza la operación de inicio de sesión, validando los datos ingresados y llamando al caso de uso.
-     * Actualiza el estado según el resultado de la operación.
-     */
     private fun login() {
         viewModelScope.launch {
             val current = _state.value
 
             if (!isEmailValid(current.email)) {
-                _state.value = current.copy(errorMessage = "Email inválido")
+                _state.value = current.copy(error = LoginError.InvalidEmail)
                 return@launch
             }
             if (!isPasswordValid(current.password)) {
-                _state.value = current.copy(errorMessage = "La contraseña debe tener al menos 6 caracteres")
+                _state.value = current.copy(error = LoginError.ShortPassword())
                 return@launch
             }
 
-            _state.value = current.copy(isLoading = true, errorMessage = null)
+            _state.value = current.copy(isLoading = true, error = null)
 
             val result = loginUseCase(current.email, current.password)
             when (result) {
@@ -72,7 +60,7 @@ class LoginViewModel(
                     _state.value = _state.value.copy(isLoading = false, success = true)
                 }
                 is AuthRepositoryResult.Error -> {
-                    _state.value = _state.value.copy(isLoading = false, errorMessage = result.message)
+                    _state.value = _state.value.copy(isLoading = false, error = LoginError.FirebaseError(result.message))
                 }
                 AuthRepositoryResult.Loading -> {
                     _state.value = _state.value.copy(isLoading = true)
@@ -81,12 +69,6 @@ class LoginViewModel(
         }
     }
 
-    /**
-     * Valida si el email ingresado cumple con un formato válido.
-     *
-     * @param email Correo electrónico a validar.
-     * @return `true` si el email es válido, de lo contrario `false`.
-     */
     private fun isEmailValid(email: String): Boolean {
         val pattern = Pattern.compile(
             "^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$",
@@ -95,12 +77,6 @@ class LoginViewModel(
         return pattern.matcher(email).matches()
     }
 
-    /**
-     * Valida si la contraseña cumple con los criterios de longitud mínima.
-     *
-     * @param password Contraseña a validar.
-     * @return `true` si la contraseña es válida, de lo contrario `false`.
-     */
     private fun isPasswordValid(password: String): Boolean {
         return password.length >= 6
     }
