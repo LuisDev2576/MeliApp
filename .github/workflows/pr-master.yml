@@ -23,7 +23,7 @@ jobs:
             - name: Ejecutar tests unitarios (u otras validaciones)
               run: ./gradlew test
 
-            # Se crea el directorio para los AVDs si no existe
+            # Crear directorio para AVD (en caso de que no exista)
             - name: Crear directorio para AVD
               run: mkdir -p ~/.android/avd
 
@@ -33,4 +33,5 @@ jobs:
                   api-level: 33
                   target: google_apis
                   arch: x86_64
+                  boot-timeout: 300
                   script: ./gradlew connectedCheck
