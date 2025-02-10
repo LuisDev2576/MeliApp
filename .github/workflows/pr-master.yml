@@ -23,6 +23,10 @@ jobs:
             - name: Ejecutar tests unitarios (u otras validaciones)
               run: ./gradlew test
 
+            # Se crea el directorio para los AVDs si no existe
+            - name: Crear directorio para AVD
+              run: mkdir -p ~/.android/avd
+
             - name: Configurar emulador Android y ejecutar tests instrumentados
               uses: ReactiveCircus/android-emulator-runner@v2.18.0
               with:
