@@ -24,7 +24,7 @@ jobs:
               run: ./gradlew test
 
             - name: Configurar emulador Android y ejecutar tests instrumentados
-              uses: r0adkll/android-emulator-runner@v2.18.0
+              uses: ReactiveCircus/android-emulator-runner@v2.18.0
               with:
                   api-level: 33
                   script: ./gradlew connectedCheck
